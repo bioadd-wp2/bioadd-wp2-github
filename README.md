@@ -4,7 +4,7 @@ This repository hosts all code for BIOADD Work Package 2. It is currently a priv
 
 ### How does this work?
 
-It is strongly recommended to install (https://desktop.github.com)[GitHub Desktop].
+It is strongly recommended to install [GitHub Desktop](https://desktop.github.com). 
 
 ### GitHub practices
 
