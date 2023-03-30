@@ -1,29 +1,33 @@
 ---
-title: "data-management"
-output: html_document
-date: "2023-03-30"
+title: "Data Management for BIOADD Work Package 2"
+author:
+ - name: Lorenzo Sileci
+   email: l.sileci@lse.ac.uk
+   affiliation: LSE, Department of Geography and Environment; Grantham Research Institute on Climate Change and the Environment
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    theme: cerulean 
+    highlight: tango
+    
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+### Welcome
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This website hosts our **data management protocol** on BIOADD's Work Package 2. It will persist as a static website for the entire duration of the project, so that we can all refer to it when in need of pointers about good data and coding practices with GitHub.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+### Data storage
 
-```{r cars}
-summary(cars)
-```
+Initially, we will store all of our **raw and constructed data** on our shared Dropbox folder. It is important to avoid confusion on these folders, as they will be used by all of us at different points in time. For example, in the current `Data` folder on Dropbox, there is a Word document describing the data needs and parameters of interest. Ideally, we would keep such a document in a separate folder named `data-notes` or something of the kind.
 
-## Including Plots
+##### A quick note on file names
 
-You can also embed plots, for example:
+In the interest of mental sanity, let's **avoid using whitespace** in any file names (text, code, folders, etc.). Whitespace kills code and is difficult to detect at a glance. Let's agree on a notation that we can be consistent with going forward. My preferred notation is **small case** with **hyphens** as the word separator, but if we prefer **underscores** there is no problem. 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+An example of a bad file name is `data Lorenzo 30_03_2023.dta`. We **won't need any dates in file names** and clearly the combination of small caps, Caps, and underscores would be a mess to use. Moreover, this file would not tell anybody anything on a first glance. Something appropriate could be for example `municipality_nightlights_panel_bolivia.dta`.  
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Same thing goes for code scripts and container folders. `code_lorenzo_nightlights.R` would not fly, even if the naming practice is correct; we would need something like `bolivia_municipality_nightlights_extract.R` for this to be recognisable.
