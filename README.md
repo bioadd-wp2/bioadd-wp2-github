@@ -9,3 +9,7 @@ It is strongly recommended to install [GitHub Desktop](https://desktop.github.co
 ### GitHub practices
 
 Initially, we will store our data on the shared WP2 Dropbox folder. 
+
+### Data Management
+
+Please refer to the [BIOADD data webpage](https://el-chinosauro.github.io/bioadd-wp2-github/) for data management best practices.
