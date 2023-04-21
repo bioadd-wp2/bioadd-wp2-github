@@ -22,19 +22,25 @@ This website hosts our **data management protocol** on BIOADD's Work Package 2. 
 
 ### GitHub Usage
 
+#### Installing and Setup
+
 It is strongly recommended to install [GitHub Desktop](https://desktop.github.com) if you're not familiar with using the command line. This way, you can use a GUI to exploit GitHub's features.
 
 After installing GitHub Desktop, go to the [GitHub WP2 Repo](https://github.com/el-chinosauro/bioadd-wp2-github), click on "Code" and on "Open in GitHub Desktop", as shown in the picture below:
 
 ![](webpage-files/github-init.png)
 
-You will now see a screen like the one below:
+You will now see a screen like the one below. This is the repository page in GitHub Desktop, and you will be able to see any **changes you make to the repo** on this screen.
 
 ![](webpage-files/clone-screen.png)
 
+For example, in the screen below you can see how I have changed this exact file to add a few more lines of text. In red shading you'll see the previous version, and in green the current changes:
 
+![](webpage-files/github-changes.png)
 
+You can also access the **repo history**. Below, you can see how 14 minutes prior to writing this, I had edited the repo's README file. From there, I could revert the changes to the state of the art of 14 minutes ago, if I had made some irreparable mistakes.
 
+![](webpage-files/github-history.png)
 
 
 ### Data storage
