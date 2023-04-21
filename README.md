@@ -8,7 +8,7 @@ It is strongly recommended to install [GitHub Desktop](https://desktop.github.co
 
 After installing GitHub Desktop, go to the [GitHub WP2 Repo](https://github.com/el-chinosauro/bioadd-wp2-github), click on "Code" and on "Open in GitHub Desktop", as shown in the picture below:
 
-![github initialise](~/Dropbox/BIOADD/Work Packages/WP2/bioadd-wp2-github/webpage-files/github-init.png)
+<img width="1508" alt="github-init" src="https://user-images.githubusercontent.com/46905645/233615899-61e1dfef-9b85-4125-8b44-60fe3fe1ead1.png">
 
 
 ### GitHub practices
