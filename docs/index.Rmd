@@ -54,6 +54,9 @@ We won't go deep into branching at the moment, as for now the project does not h
 
 ![](webpage-files/github-push.png)
 
+#### A simple workflow to illustrate the process
+
+Below, you can see a video of me making some changes in a local file, committing them to main, and pushing them to origin. This is just a demo to illustrate the workflow.
 
 
 
