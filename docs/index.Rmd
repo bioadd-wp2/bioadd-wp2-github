@@ -42,6 +42,21 @@ You can also access the **repo history**. Below, you can see how 14 minutes prio
 
 ![](webpage-files/github-history.png)
 
+#### Making changes to the repo
+
+Once you've made the changes you were looking to make, you will see them in the repo screen on GitHub Desktop. In order to sync them from your local machine to the online repo, you need to first **commit** them to a branch of the repo (here I am working on the `main` branch as this is the website for the entire project). Commits need a comment (to be able to retrace them later on):
+
+![](webpage-files/github-commit.png)
+
+After clicking on "Commit to `branch_name`", if you're sure about your changes, you can **push** them to the origin. This basically means saving your changes to the online repository. Once commits are pushed, they are merged to the online repository, so they become permanent! To go back to a previous state, you'll need to use the "History" tab and navigate back to the state you desire. Usually, "going back in time" entails opening a new branch of the project (a *problem resolution* branch that can be merged back to main at a later stage.)
+
+We won't go deep into branching at the moment, as for now the project does not have separate papers/datasets, but branching will be useful once we are at that stage. 
+
+![](webpage-files/github-push.png)
+
+
+
+
 
 ### Data storage
 
