@@ -8,7 +8,7 @@
 #######################################################################
 ### Downloads
 
-# The download of a single file must finish within the timeout value (seconds). You can indrease this value if you get timeout errors. 
+# The download of a single file must finish within the timeout value (seconds). You can increase this value if you get timeout errors. 
 options(timeout = 600) 
 
 # Download Mapbiomas Bolivia
