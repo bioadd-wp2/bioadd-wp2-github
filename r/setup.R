@@ -1,0 +1,26 @@
+# 2023/09/22
+# Ville Inkinen
+# BIOADD Work Package 2
+#
+# This script initializes the work environment:
+#   - defines file paths; creates folders if necessary
+#   - imports packages
+#   - defines user functions
+#
+# Start every session by running this script
+#
+
+# Clear environment
+rm(list = ls())
+gc()
+
+# This .txt file must exist in the R working directory and it must specify the local clone directory of the GitHub repository. See INSTRUCTIONS.txt
+project_path <- readLines("bioadd-wp2-paths.txt", warn = FALSE)
+
+# More detailed instruction in each script
+source(paste0(project_path, "r/setup/filenames.R"))
+source(paste0(project_path, "r/setup/get-folders.R"))
+source(paste0(project_path, "r/setup/packages.R"))
+source(paste0(project_path, "r/setup/user-functions.R"))
+
+cat("setup.R done\n")
