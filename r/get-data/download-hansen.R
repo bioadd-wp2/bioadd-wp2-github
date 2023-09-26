@@ -29,5 +29,9 @@ for (layer in names(download_urls)) {
 
 }
 
+
+# Garbage collection
 rm(tiles, download_urls, output_folders, output_file)
+gc()
+
 cat("download-hansen.R done\n")

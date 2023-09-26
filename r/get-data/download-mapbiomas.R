@@ -12,5 +12,9 @@ for (i in 1:length(download_urls)) {
 	cat(basename(download_urls[i]), "downloaded to ", output_folder, "\n")
 }
 
+
+# Garbage collection
 rm(download_urls, output_folder, output_file)
+gc()
+
 cat("download-mapbiomas.R done\n")

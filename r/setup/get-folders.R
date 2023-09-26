@@ -3,7 +3,7 @@
 #######################################################################
 
 # Folder structure defined below as a nested list. The final level should be an empty list
-# Folders may be added later
+# Folders may be added later along the project
 
 folders_list <- list(		
 	data = list(
@@ -14,7 +14,11 @@ folders_list <- list(
 					lossyear = list(),
 					treecover = list()
 					),
-				mapbiomas = list()
+				mapbiomas = list(),
+				nightlights = list(
+					dmsp = list(),
+					viirs = list()
+					)
 				),
 			gpkg = list(),
 			shp = list(),
@@ -39,16 +43,16 @@ folders_list <- list(
 # This function creates the folders in the list recursively
 
 create_folders <- function(folder_list, current_path) {
-  for (key in names(folder_list)) {
-    new_path <- file.path(current_path, key)
-    if (!dir.exists(new_path)) {
-      dir.create(new_path)
-      cat("Folder created:", new_path, "\n")
-    }
-    if (length(folder_list[[key]]) > 0) {
-      create_folders(folder_list[[key]], new_path)
-    }
-  }
+	for (key in names(folder_list)) {
+	new_path <- file.path(current_path, key)
+		if (!dir.exists(new_path)) {
+			dir.create(new_path)
+			cat("Folder created:", new_path, "\n")
+		}
+		if (length(folder_list[[key]]) > 0) {
+			create_folders(folder_list[[key]], new_path)
+		}
+	}
 }
 
 # Create folders
