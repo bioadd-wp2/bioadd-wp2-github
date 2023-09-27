@@ -16,8 +16,13 @@ folders_list <- list(
 					),
 				mapbiomas = list(),
 				nightlights = list(
-					dmsp = list(),
-					viirs = list()
+					dmsp = list(
+						extracted = list(),
+						tar = list()
+						),
+					viirs = list(
+						extracted = list()
+						)
 					)
 				),
 			gpkg = list(),

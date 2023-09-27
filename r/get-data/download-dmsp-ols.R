@@ -28,15 +28,11 @@ extracted_folder <- paste0(project_path, "data/raw/raster/nightlights/dmsp/extra
 for (i in 1:length(tar_files)) untar(tar_files[i], exdir = extracted_folder)
 
 # Extract .gz files within the folder; this removes the .gz file
-gz_files <- list.files(extracted_folder, patter = ".gz", full.names = TRUE)
+gz_files <- list.files(extracted_folder, pattern = ".gz", full.names = TRUE)
 for (i in 1:length(gz_files)) R.utils::gunzip(gz_files[i], overwrite = TRUE)
 
-# (Might want to remove unneccessary files with file.remove)
-
-
-
 # Garbage collection
-rm(dmsp_files, download_urls, output_folder, output_file)
+rm(dmsp_files, download_urls, download_folder, output_file, tar_files, extracted_folder, gz_files)
 gc()
 
 cat("download-dmsp-ols.R done\n")
