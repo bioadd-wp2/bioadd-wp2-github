@@ -40,7 +40,8 @@ folders_list <- list(
 		html = list()
 		),
 	r = list(
-		local = list()
+		local = list(),
+		share = list()
 		)
 	)
 
