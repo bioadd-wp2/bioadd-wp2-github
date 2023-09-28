@@ -38,6 +38,16 @@ source(paste0(project_path, "r/get-data/download-misc.R"))
 ### Other data sources
 
 # INRA property boundaries
+# The original shapefile in Dropbox is corrupted but can be recovered:
+# - Open in ArcGIS and export as .gpkg
+# - Check that the variables have consistent entries. If anything looks suspicious, the file is still corrupted (e.g. several entries in character columns that are systematically wrong or clearly belong to a different column).
+# There are also some self-intersections in the geometries
+# These issues have been fixed in the following file in Dropbox, copied to project folder
 
-#
+file.copy(from = paste0(dropbox_path, "data/constructed-data/INRA_TITULADOS_resaved_fixed.gpkg"), to = filenames$vector$inra_titulados, overwrite = TRUE)
+
+
+
+
+
 
