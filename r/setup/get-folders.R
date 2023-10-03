@@ -9,6 +9,7 @@ folders_list <- list(
 	data = list(
 		raw = list(
 			raster = list(
+				gmted2010 = list(),
 				hansen = list(
 					gain = list(),
 					lossyear = list(),
@@ -22,7 +23,8 @@ folders_list <- list(
 						),
 					viirs = list(
 						extracted = list()
-						)
+						),
+					harmonized = list()
 					)
 				),
 			gpkg = list(),

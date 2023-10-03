@@ -13,7 +13,7 @@
 rm(list = ls())
 gc()
 
-# This .txt file must exist in the R working directory and it must specify the local clone directory of the GitHub repository and the project Dropbox path. See INSTRUCTIONS.txt
+# bioadd-wp2-paths.txt must exist in the R working directory and it must specify the local clone directory of the GitHub repository and the project Dropbox path. See INSTRUCTIONS.txt
 project_path <- readLines("bioadd-wp2-paths.txt", warn = FALSE)[1]
 dropbox_path <- readLines("bioadd-wp2-paths.txt", warn = FALSE)[2]
 cat("project_path set to:", project_path, "\n")

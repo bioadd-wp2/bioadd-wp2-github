@@ -6,7 +6,6 @@ download_urls <- c(
 	paste0("https://eogdata.mines.edu/nighttime_light/annual/v21/", 2014:2021, "/VNL_v21_npp_", 2014:2021, "_global_vcmslcfg_c202205302300.average_masked.dat.tif.gz")
 	)
 
-
 download_folder <- paste0(project_path, "data/raw/raster/nightlights/viirs/extracted/")
 
 # Download
@@ -20,9 +19,8 @@ for (i in 1:length(download_urls)) {
 gz_files <- list.files(download_folder, pattern = ".gz", full.names = TRUE)
 for (i in 1:length(gz_files)) R.utils::gunzip(gz_files[i], overwrite = TRUE)
 
-
 # Garbage collection
-rm(download_urls, download_folder, output_file, gz_files, output_file, gz_files)
+rm(download_urls, download_folder, output_file, gz_files)
 gc()
 
 cat("download-viirs.R done\n")
