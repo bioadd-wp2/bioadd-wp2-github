@@ -54,3 +54,4 @@ shp_files <- list.files(paste0(project_path, "data/raw/shp/"), full.names = TRUE
 extracted_folders <- gsub(".zip", "/", shp_files)
 for (i in 1:length(shp_files)) unzip(zipfile = shp_files[i], exdir = extracted_folders[i])
 
+
