@@ -7,6 +7,7 @@
 
 folders_list <- list(		
 	data = list(
+
 		raw = list(
 			raster = list(
 				gmted2010 = list(),
@@ -28,19 +29,22 @@ folders_list <- list(
 					)
 				),
 			gpkg = list(),
-			shp = list(),
-			csv = list()
+			shp  = list(),
+			csv  = list()
 			),
+
 		constructed = list(
 			raster = list(),
 			gpkg = list(),
 			csv = list()
 		)
 	),
+	
 	output = list(
 		figures = list(),
 		html = list()
 		),
+
 	r = list(
 		local = list(),
 		share = list()

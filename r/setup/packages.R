@@ -9,7 +9,7 @@
 
 packages_list <- list()
 
-packages_list$general <- c("R.utils", "tidyverse", "foreach", "Rcpp", "data.table")
+packages_list$general <- c("R.utils", "tidyverse", "foreach", "Rcpp", "foreach", "doParallel", "data.table")
 packages_list$gis <- c("terra", "exactextractr", "sf", "rgee")
 packages_list$graphs <- c("ggplot2", "ggthemes", "viridis", "patchwork", "ggpubr")
 packages_list$rmarkdown <- c("rmarkdown", "knitr")
