@@ -3,7 +3,7 @@
 #######################################################################
 
 # Folder structure defined below as a nested list. The final level should be an empty list
-# Folders may be added later along the project
+# Folders may be added later along the project, but do not change any existing folders
 
 folders_list <- list(		
 	data = list(
@@ -39,7 +39,7 @@ folders_list <- list(
 			csv = list()
 		)
 	),
-	
+
 	output = list(
 		figures = list(),
 		html = list()
