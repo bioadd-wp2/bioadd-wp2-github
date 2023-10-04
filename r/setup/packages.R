@@ -20,7 +20,7 @@ packages <- unique(unlist(packages_list))
 ### Install new packages
 
 new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]
-#if (length(new_packages) > 0) install.packages(new_packages, repos="http://cran.rstudio.com/") else cat("All required packages are installed", "\n")
+if (length(new_packages) > 0) install.packages(new_packages, repos="http://cran.rstudio.com/") else cat("All required packages are installed", "\n")
 
 ### Import packages to session
 
