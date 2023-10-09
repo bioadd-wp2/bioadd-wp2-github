@@ -28,7 +28,11 @@ filenames$raster$gmted <- lapply(list(
 
 filenames$vector$gadm <- paste0(project_path, "data/raw/gpkg/gadm41_BOL.gpkg")
 
-filenames$vector$inra_titulados <- paste0(project_path, "data/constructed/gpkg/INRA_titulados_resaved_fixed.gpkg")
+filenames$vector$inra <- lapply(list(
+    fixed = "INRA_titulados_resaved_fixed",
+    simplified = "INRA_titulados_resaved_fixed_simplified"
+    ), function(x) paste0(project_path, "data/constructed/gpkg/", x, ".gpkg"))
+
 
 filenames$vector$protected_areas <- lapply(list(
     national_2014 = "ap_nacional_wgs84_2014",

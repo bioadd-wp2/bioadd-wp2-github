@@ -45,7 +45,7 @@ source(paste0(project_path, "r/get-data/download-misc.R"))
 # There are also some self-intersections in the geometries. These have been fixed with ArcGIS fix geometries
 # These issues have been fixed in the following file in Dropbox, copied to project folder
 
-file.copy(from = paste0(dropbox_path, "data/constructed-data/INRA_TITULADOS_resaved_fixed.gpkg"), to = filenames$vector$inra_titulados, overwrite = TRUE)
+file.copy(from = paste0(dropbox_path, "data/constructed-data/INRA_TITULADOS_resaved_fixed.gpkg"), to = filenames$vector$inra$fixed, overwrite = TRUE)
 
 
 ### Unzip shapefiles

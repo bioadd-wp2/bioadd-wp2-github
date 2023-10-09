@@ -42,6 +42,7 @@ folders_list <- list(
 
 	output = list(
 		figures = list(),
+		gif = list(),
 		html = list()
 		),
 
