@@ -20,7 +20,7 @@ filenames$raster$mapbiomas <- lapply(setNames(                                  
 filenames$raster$mapbiomas_transitions <- lapply(setNames(                                   
             as.list(paste0("bolivia_transitions_", 1985:2020, "_", 1986:2021, ".tif")),
             paste0("bolivia_transitions_", 1986:2021)                            # Naming by end year
-        ), function(x) paste0(project_path, "data/raw/raster/mapbiomas/", x))
+        ), function(x) paste0(project_path, "data/raw/raster/mapbiomas-transitions/", x))
 
 filenames$raster$gmted <- lapply(list(
     mean = "mn75_grd/mn75_grd/w001001.adf",
