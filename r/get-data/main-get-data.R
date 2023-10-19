@@ -13,6 +13,9 @@ options(timeout = 6000)
 # Mapbiomas Bolivia
 source(paste0(project_path, "r/get-data/download-mapbiomas.R"))
 
+# Mapbiomas Bolivia transitions
+source(paste0(project_path, "r/get-data/download-mapbiomas-transitions.R"))
+
 # Hansen
 source(paste0(project_path, "r/get-data/download-hansen.R"))
 

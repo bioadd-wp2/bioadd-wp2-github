@@ -12,16 +12,20 @@ filenames$csv <- list()
 
 ### Raster layers
 
-filenames$raster$mapbiomas <- lapply(setNames(                                   # Assigns a named list that refers to filenames
+filenames$raster$mapbiomas <- lapply(setNames(                                   # Assigns a named list
             as.list(paste0("bolivia_coverage_", 1985:2021, ".tif")),             # Filenames in folder
             paste0("bolivia_", 1985:2021)                                        # Respective names for list elements
         ), function(x) paste0(project_path, "data/raw/raster/mapbiomas/", x))    # Folder path    
+
+filenames$raster$mapbiomas_transitions <- lapply(setNames(                                   
+            as.list(paste0("bolivia_transitions_", 1985:2020, "_", 1986:2021, ".tif")),
+            paste0("bolivia_transitions_", 1986:2021)                            # Naming by end year
+        ), function(x) paste0(project_path, "data/raw/raster/mapbiomas/", x))
 
 filenames$raster$gmted <- lapply(list(
     mean = "mn75_grd/mn75_grd/w001001.adf",
     sd = "ds75_grd/ds75_grd/w001001.adf"
     ), function(x) paste0(project_path, "data/raw/raster/gmted2010/", x))
-
 
 
 ### Vector layers
