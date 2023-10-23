@@ -57,7 +57,7 @@ These show rather noisy patterns
 - Cannot discern any systematic differences between the two. Only the expected difference in magnitudes / extents.
 
 <div>
-  <input type="range" min="1" max="`r 36`" value="1" id="frameSlider2" step="1">
+  <input type="range" min="1" max="`r 30`" value="1" id="frameSlider2" step="1">
   <button id="playButton2">Play</button>
   <button id="pauseButton2">Pause</button>
   <div id="frameContainer2">
@@ -91,12 +91,6 @@ These show rather noisy patterns
   <img src="images/el-torno/plot_el_torno_28.png" class="gifFrame" id="el-torno-frame28" style="display:none"> 
   <img src="images/el-torno/plot_el_torno_29.png" class="gifFrame" id="el-torno-frame29" style="display:none"> 
   <img src="images/el-torno/plot_el_torno_30.png" class="gifFrame" id="el-torno-frame30" style="display:none"> 
-  <img src="images/el-torno/plot_el_torno_31.png" class="gifFrame" id="el-torno-frame31" style="display:none"> 
-  <img src="images/el-torno/plot_el_torno_32.png" class="gifFrame" id="el-torno-frame32" style="display:none"> 
-  <img src="images/el-torno/plot_el_torno_33.png" class="gifFrame" id="el-torno-frame33" style="display:none"> 
-  <img src="images/el-torno/plot_el_torno_34.png" class="gifFrame" id="el-torno-frame34" style="display:none"> 
-  <img src="images/el-torno/plot_el_torno_35.png" class="gifFrame" id="el-torno-frame35" style="display:none"> 
-  <img src="images/el-torno/plot_el_torno_36.png" class="gifFrame" id="el-torno-frame36" style="display:none">
 
   </div>
 </div>
