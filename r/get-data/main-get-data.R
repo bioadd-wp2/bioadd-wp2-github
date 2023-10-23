@@ -19,7 +19,7 @@ source(paste0(project_path, "r/get-data/download-mapbiomas-transitions.R"))
 # Hansen
 source(paste0(project_path, "r/get-data/download-hansen.R"))
 
-# Night lights
+### Night lights
 
 # Harmonized night lights
 source(paste0(project_path, "r/get-data/download-nightlights-harmonized.R"))

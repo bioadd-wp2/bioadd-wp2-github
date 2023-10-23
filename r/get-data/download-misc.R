@@ -115,18 +115,21 @@ download.file(
 	)
 
 
-# Roads and railways 2016
+### Ecoregions
 
 download.file(
-	url = "https://geo.gob.bo/geoserver/igm/wfs?SERVICE=WFS&REQUEST=GetFeature&VERSION=1.0.0&TYPENAME=igm%3ACAMINOS_Y_VIA_FERREA&OUTPUTFORMAT=SHAPE-ZIP",
-	destfile = paste0(project_path, "data/raw/shp/"),
+	url = "https://storage.googleapis.com/mapbiomas-public/initiatives/bolivia/collection_1/download/layers/ecorregion.zip",
+	destfile = paste0(project_path, "data/raw/shp/ecorregion.zip"),
 	mode = "wb"
 	)
 
 
+### Indigenous territories
 
-curl_download(url = "https://geo.gob.bo/geoserver/igm/wfs?SERVICE=WFS&REQUEST=GetFeature&VERSION=1.0.0&TYPENAME=igm%3ACAMINOS_Y_VIA_FERREA&OUTPUTFORMAT=SHAPE-ZIP",
-              destfile = paste0(project_path, "data/raw/shp/")
-              )
+download.file(
+	url = "https://storage.googleapis.com/mapbiomas-public/initiatives/bolivia/collection_1/download/layers/territorio-indigena-titulado.zip",
+	destfile = paste0(project_path, "data/raw/shp/territorio-indigena-titulado.zip"),
+	mode = "wb"
+	)
 
 
