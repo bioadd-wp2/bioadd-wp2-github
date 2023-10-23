@@ -124,6 +124,15 @@ download.file(
 	)
 
 
+### Biomes
+
+download.file(
+	url = "https://storage.googleapis.com/mapbiomas-public/initiatives/bolivia/collection_1/download/layers/bioma-pais.zip",
+	destfile = paste0(project_path, "data/raw/shp/bioma-pais.zip"),
+	mode = "wb"
+	)
+
+
 ### Indigenous territories
 
 download.file(
