@@ -47,14 +47,8 @@ for (i in seq_len(num_frames)) {
 
 ### El Torno
 
-- Top Left: forest gain - own calculation from MapBiomas Bolivia land cover maps
-- Top Right: forest gain - Mapbiomas Bolivia transitions layer (same as above but with an additional spatial filter)
-- Bottom Left: land cover
-- Bottom Right: forest loss
-
-These show rather noisy patterns
-
-- Cannot discern any systematic differences between the two. Only the expected difference in magnitudes / extents.
+- Left: Mapbiomas land cover
+- Right: Harmonized night lights 
 
 <div>
   <input type="range" min="1" max="`r 30`" value="1" id="frameSlider2" step="1">

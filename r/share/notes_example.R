@@ -89,7 +89,8 @@ for (i in seq_along(g_combined)) {
 
 file.copy(
 	from = paste0(project_path, "r/share/notes_example.Rmd"),
-	to = paste0(project_path, "output/html/notes-example/notes_example.Rmd")
+	to = paste0(project_path, "output/html/notes-example/notes_example.Rmd"),
+	overwrite = TRUE
 	)
 
 
