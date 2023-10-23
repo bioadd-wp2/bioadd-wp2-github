@@ -1,0 +1,153 @@
+---
+title: "Notes"
+author: "Ville Inkinen"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    keep_md: true
+    warning: false
+knitr:
+    warning: false
+---
+
+<style type="text/css">
+.main-container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
+```{r echo = FALSE}
+knitr::opts_chunk$set(warning = FALSE)
+```
+
+
+### General updates
+
+### Within-municipality patterns
+
+<!-- Create the image tags as below, but these must be manually pasted as html code in this document. See the html code below.-->
+
+```{r echo = FALSE, results='hide'}
+
+frame_files <- paste0(figures_folder, "plot_el_torno_", 1:36, ".png")
+
+num_frames <- length(frame_files)
+
+# Create the html image tags
+for (i in seq_len(num_frames)) {
+
+  visibility <- ifelse(i == 1, "block", "none")
+  cat(sprintf('<img src="%s" class="gifFrame" id="frame%d" style="display:%s">', frame_files[i], i, visibility), "\n")
+
+}
+
+```
+
+### El Torno
+
+- Top Left: forest gain - own calculation from MapBiomas Bolivia land cover maps
+- Top Right: forest gain - Mapbiomas Bolivia transitions layer (same as above but with an additional spatial filter)
+- Bottom Left: land cover
+- Bottom Right: forest loss
+
+These show rather noisy patterns
+
+- Cannot discern any systematic differences between the two. Only the expected difference in magnitudes / extents.
+
+<div>
+  <input type="range" min="1" max="`r 36`" value="1" id="frameSlider2" step="1">
+  <button id="playButton2">Play</button>
+  <button id="pauseButton2">Pause</button>
+  <div id="frameContainer2">
+  <img src="images/el-torno/plot_el_torno_1.png" class="gifFrame" id="el-torno-frame1" style="display:block"> 
+  <img src="images/el-torno/plot_el_torno_2.png" class="gifFrame" id="el-torno-frame2" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_3.png" class="gifFrame" id="el-torno-frame3" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_4.png" class="gifFrame" id="el-torno-frame4" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_5.png" class="gifFrame" id="el-torno-frame5" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_6.png" class="gifFrame" id="el-torno-frame6" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_7.png" class="gifFrame" id="el-torno-frame7" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_8.png" class="gifFrame" id="el-torno-frame8" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_9.png" class="gifFrame" id="el-torno-frame9" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_10.png" class="gifFrame" id="el-torno-frame10" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_11.png" class="gifFrame" id="el-torno-frame11" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_12.png" class="gifFrame" id="el-torno-frame12" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_13.png" class="gifFrame" id="el-torno-frame13" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_14.png" class="gifFrame" id="el-torno-frame14" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_15.png" class="gifFrame" id="el-torno-frame15" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_16.png" class="gifFrame" id="el-torno-frame16" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_17.png" class="gifFrame" id="el-torno-frame17" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_18.png" class="gifFrame" id="el-torno-frame18" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_19.png" class="gifFrame" id="el-torno-frame19" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_20.png" class="gifFrame" id="el-torno-frame20" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_21.png" class="gifFrame" id="el-torno-frame21" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_22.png" class="gifFrame" id="el-torno-frame22" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_23.png" class="gifFrame" id="el-torno-frame23" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_24.png" class="gifFrame" id="el-torno-frame24" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_25.png" class="gifFrame" id="el-torno-frame25" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_26.png" class="gifFrame" id="el-torno-frame26" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_27.png" class="gifFrame" id="el-torno-frame27" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_28.png" class="gifFrame" id="el-torno-frame28" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_29.png" class="gifFrame" id="el-torno-frame29" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_30.png" class="gifFrame" id="el-torno-frame30" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_31.png" class="gifFrame" id="el-torno-frame31" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_32.png" class="gifFrame" id="el-torno-frame32" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_33.png" class="gifFrame" id="el-torno-frame33" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_34.png" class="gifFrame" id="el-torno-frame34" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_35.png" class="gifFrame" id="el-torno-frame35" style="display:none"> 
+  <img src="images/el-torno/plot_el_torno_36.png" class="gifFrame" id="el-torno-frame36" style="display:none">
+
+  </div>
+</div>
+
+
+
+
+<!-- End of content -->
+<!-- Javascript goes here -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    function setFrameVisibility(frameContainer, slider, startIndex=1){
+        var frames = frameContainer.querySelectorAll('.gifFrame');
+        frames.forEach((frame, index) => {
+            frame.style.display = (index === slider.value - startIndex) ? 'block' : 'none';
+        });
+    }
+
+    function playAnimation(frameContainer, slider, speed=750){
+
+        const numberOfFrames = frameContainer.querySelectorAll('.gifFrame').length;
+
+        var playInterval = setInterval(() => {
+            if (slider.value < numberOfFrames){
+                slider.value = parseInt(slider.value) + 1;
+                setFrameVisibility(frameContainer, slider);
+            } else {
+                clearInterval(playIntervalFrac10p);
+            }
+        }, speed);
+        return playInterval;
+    }
+
+
+    // Animation control for El Torno
+    var slider2 = document.getElementById('frameSlider2');
+    var frameContainer2 = document.getElementById('frameContainer2');
+    var playButton2 = document.getElementById('playButton2');
+    var pauseButton2 = document.getElementById('pauseButton2');
+    var playInterval2 ;
+
+    slider2.addEventListener('input', function(){
+        setFrameVisibility(frameContainer2, slider2);
+    });
+    playButton2.addEventListener('click', function(){
+        playInterval2 = playAnimation(frameContainer2, slider2);
+    });
+    pauseButton2.addEventListener('click', function(){
+        clearInterval(playInterval2);
+    });
+
+});
+</script>

@@ -22,5 +22,5 @@
                                  Glaciar,                            Glacier,    34, #4FD3FF
                             No observado,                       Not observed,    27, #D5D5E5
 "   |>
-	fread() |>
-   fwrite(filenames$csv$mapbiomas_colors)
+    fread() |>
+    fwrite(filenames$csv$mapbiomas_colors)

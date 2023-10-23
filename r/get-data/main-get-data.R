@@ -58,3 +58,5 @@ extracted_folders <- gsub(".zip", "/", shp_files)
 for (i in 1:length(shp_files)) unzip(zipfile = shp_files[i], exdir = extracted_folders[i])
 
 
+### Mapbiomas color codes
+source(paste0(project_path, "r/get-data/get-mapbiomas-colors.R"))
