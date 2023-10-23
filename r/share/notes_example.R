@@ -23,6 +23,8 @@ r_nl_cropped <- lapply(r_nl, function(x) terra::crop(x, crop_polygon))
 
 ### Graphs
 
+mapbiomas_colors <- fread(filenames$csv$mapbiomas_colors)
+
 # Resampling resolution
 max_cell <- 5E5
 
