@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 slider.value = parseInt(slider.value) + 1;
                 setFrameVisibility(frameContainer, slider);
             } else {
-                clearInterval(playIntervalFrac10p);
+                clearInterval(playInterval);
             }
         }, speed);
         return playInterval;
