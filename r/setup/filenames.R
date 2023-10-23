@@ -27,10 +27,13 @@ filenames$raster$gmted <- lapply(list(
     sd = "ds75_grd/ds75_grd/w001001.adf"
     ), function(x) paste0(project_path, "data/raw/raster/gmted2010/", x))
 
-filenames$raster$nightlights$harmonized <- lapply(setNames(                           # Assigns a named list
-        as.list(paste0("Harmonized_DN_NTL_", 1992:2021, "_calDMSP.tif")),             # Filenames in folder
-        paste0("nightlights_harmonized_", 1992:2021)                                  # Respective names for list elements
-    ), function(x) paste0(project_path, "data/raw/raster/nightlights/harmonized", x)) # Folder path    
+filenames$raster$nightlights <- lapply(setNames(                                       # Assigns a named list
+        as.list(c(
+            paste0("Harmonized_DN_NTL_", 1992:2013, "_calDMSP.tif"),
+            paste0("Harmonized_DN_NTL_", 2014:2021, "_simVIIRS.tif")
+            )),                                                                        # Filenames in folder
+        paste0("nightlights_harmonized_", 1992:2021)                                   # Respective names for list elements
+    ), function(x) paste0(project_path, "data/raw/raster/nightlights/harmonized/", x)) # Folder path    
 
 
 ### Vector layers

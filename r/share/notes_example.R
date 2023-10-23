@@ -7,11 +7,8 @@ library(tidyterra)
 
 ### Read rasters
 
-r_gain <- lapply(list.files(paste0(project_path, "data/constructed/raster/mapbiomas-transitions/forest-gain/"), full.names = TRUE), rast)
-r_loss <- lapply(list.files(paste0(project_path, "data/constructed/raster/mapbiomas-transitions/forest-loss/"), full.names = TRUE), rast)
-r_gain_mb <- lapply(list.files(paste0(project_path, "data/constructed/raster/mapbiomas-transitions/forest-gain-mapbiomas/"), full.names = TRUE), rast)
 r_mb <- lapply(filenames$raster$mapbiomas, rast)
-
+r_nl <- lapply(filenames$raster$nightlights, rast)
 
 ### Crop a municipality
 
@@ -20,10 +17,8 @@ gadm$district <- vect(filenames$vector$gadm, layer = "ADM_ADM_3")
 
 crop_polygon <- gadm$district[gadm$district$NAME_3 == "El Torno",]
 
-r_gain_cropped <- lapply(r_gain, function(x) terra::crop(x, crop_polygon))
-r_gain_mb_cropped <- lapply(r_gain_mb, function(x) terra::crop(x, crop_polygon))
-r_loss_cropped <- lapply(r_loss, function(x) terra::crop(x, crop_polygon))
 r_mb_cropped <- lapply(r_mb, function(x) terra::crop(x, crop_polygon))
+r_nl_cropped <- lapply(r_nl, function(x) terra::crop(x, crop_polygon))
 
 
 ### Graphs
@@ -33,36 +28,6 @@ max_cell <- 5E5
 
 
 # Create graphs
-
-g_ref_list <- list()
-for (i in 1:length(r_gain_cropped)){
-	ggplot() +
-		geom_spatraster(data = as.numeric(r_gain_cropped[[i]]), maxcell = max_cell) +
-		geom_spatvector(data = crop_polygon, alpha = 0, color = "white") +
-		theme_void() + 
-		theme(legend.position = "none") ->
-		g_ref_list[[i]]
-}
-
-g_ref_mb_list <- list()
-for (i in 1:length(r_gain_mb_cropped)){
-	ggplot() +
-		geom_spatraster(data = as.numeric(r_gain_mb_cropped[[i]]), maxcell = max_cell) +
-		geom_spatvector(data = crop_polygon, alpha = 0, color = "white") +
-		theme_void() + 
-		theme(legend.position = "none") ->
-		g_ref_mb_list[[i]]
-}
-
-g_def_mb_list <- list()
-for (i in 1:length(r_loss_cropped)){
-	ggplot() +
-		geom_spatraster(data = as.numeric(r_loss_cropped[[i]]), maxcell = max_cell) +
-		geom_spatvector(data = crop_polygon, alpha = 0, color = "white") +
-		theme_void() + 
-		theme(legend.position = "none") ->
-		g_def_mb_list[[i]]
-}
 
 g_mb_list <- list()
 for (i in 1:length(r_mb_cropped)){
@@ -80,10 +45,28 @@ for (i in 1:length(r_mb_cropped)){
 }
 
 
+g_nl_list <- list()
+for (i in 1:length(r_nl_cropped)){
+	ggplot() +
+		geom_spatraster(data = as.numeric(r_nl_cropped[[i]]), maxcell = max_cell) +
+		geom_spatvector(data = crop_polygon, alpha = 0, color = "white") +
+		theme_void() + 
+		theme(legend.position = "none") ->
+		g_nl_list[[i]]
+}
+
+
 
 ### Combine to one graph
+# (Mind that the years match)
 
-g_combined <- lapply(1:length(g_ref_list), function(x) (g_ref_list[[x]] | g_ref_mb_list[[x]]) / (g_def_mb_list[[x]] | g_mb_list[[x]] ) )
+names(r_mb_cropped)
+names(r_nl_cropped)
+
+g_mb_list_matching <- g_mb_list[8:length(g_mb_list)]
+
+g_combined <- lapply(1:length(g_mb_list_matching), function(x) (g_mb_list_matching[[x]] | g_nl_list[[x]] ) )
+
 
 ### Save
 
