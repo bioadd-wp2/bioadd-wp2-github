@@ -1,7 +1,3 @@
-#
-# Let's replicate something from two weeks ago...
-# see how the regrowth patterns look like with the mapbiomas transitions mask 
-#
 
 library(tidyterra)
 
