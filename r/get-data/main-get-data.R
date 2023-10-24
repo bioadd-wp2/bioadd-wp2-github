@@ -60,9 +60,10 @@ file.copy(from = paste0(dropbox_path, "data/raw-data/bolivia-electricity-utiliti
 #######################################################################
 ### Unzip shapefiles
 
-shp_files <- list.files(paste0(project_path, "data/raw/shp/"), full.names = TRUE)
-extracted_folders <- gsub(".zip", "/", shp_files)
-for (i in 1:length(shp_files)) unzip(zipfile = shp_files[i], exdir = extracted_folders[i])
+zip_files <- list.files(paste0(project_path, "data/raw/shp/"), full.names = TRUE)
+zip_files <- zip_files[grepl(".zip", zip_files)]
+extracted_folders <- gsub(".zip", "/", zip_files)
+for (i in 1:length(zip_files)) unzip(zipfile = zip_files[i], exdir = extracted_folders[i])
 
 
 ### Mapbiomas color codes
