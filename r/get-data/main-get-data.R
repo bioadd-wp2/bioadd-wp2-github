@@ -27,12 +27,12 @@ source(paste0(project_path, "r/get-data/download-nightlights-harmonized.R"))
 # DMSP-OLS annual composites 1992-2013
 # Total download size:  11.7 GB
 # Total extracted size: 70.9 GB
-source(paste0(project_path, "r/get-data/download-dmsp-ols.R"))
+# source(paste0(project_path, "r/get-data/download-dmsp-ols.R"))
 
 # VIIRS annual composites 2012-2021
 # Total download size:    2.7 GB
 # Total extracted size: 108.2 GB
-source(paste0(project_path, "r/get-data/download-viirs.R"))
+# source(paste0(project_path, "r/get-data/download-viirs.R"))
 
 # Miscellaneous downloads
 source(paste0(project_path, "r/get-data/download-misc.R"))
@@ -41,7 +41,7 @@ source(paste0(project_path, "r/get-data/download-misc.R"))
 #######################################################################
 ### Other data sources
 
-# INRA property boundaries
+### INRA property boundaries
 # The original shapefile in Dropbox is corrupted but can be recovered:
 # - Open in ArcGIS and export as .gpkg
 # - Check that the variables have consistent entries. If anything looks suspicious, the file is still corrupted (e.g. several entries in character columns that are systematically wrong or clearly belong to a different column).
@@ -51,6 +51,13 @@ source(paste0(project_path, "r/get-data/download-misc.R"))
 file.copy(from = paste0(dropbox_path, "data/constructed-data/INRA_TITULADOS_resaved_fixed.gpkg"), to = filenames$vector$inra$fixed, overwrite = TRUE)
 
 
+### Electricity utilities data
+
+file.copy(from = paste0(dropbox_path, "data/raw-data/bolivia-electricity-utilities/"), to = paste0(project_path, "data/raw/csv/"), overwrite = TRUE, recursive = TRUE)
+
+
+
+#######################################################################
 ### Unzip shapefiles
 
 shp_files <- list.files(paste0(project_path, "data/raw/shp/"), full.names = TRUE)

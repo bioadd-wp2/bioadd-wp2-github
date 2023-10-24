@@ -65,6 +65,9 @@ filenames$vector$protected_areas <- lapply(list(
 
 filenames$csv$mapbiomas_colors <- paste0(project_path, "data/constructed/csv/mapbiomas_colors.csv")
 
+filenames$csv$electricity_utilities <- paste0(project_path, "data/raw/csv/bolivia-electricity-utilities/")
+
+
 ################################
 ### Check that files exist
 
