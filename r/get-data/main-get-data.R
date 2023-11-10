@@ -46,7 +46,7 @@ source(paste0(project_path, "r/get-data/download-misc.R"))
 # - Open in ArcGIS and export as .gpkg
 # - Check that the variables have consistent entries. If anything looks suspicious, the file is still corrupted (e.g. several entries in character columns that are systematically wrong or clearly belong to a different column).
 # There are also some self-intersections in the geometries. These have been fixed with ArcGIS fix geometries
-# These issues have been fixed in the following file in Dropbox, copied to project folder
+# These issues have been fixed in the following file in Dropbox, copied to the project folder:
 
 file.copy(from = paste0(dropbox_path, "data/constructed-data/INRA_TITULADOS_resaved_fixed.gpkg"), to = filenames$vector$inra$fixed, overwrite = TRUE)
 
@@ -68,3 +68,10 @@ for (i in 1:length(zip_files)) unzip(zipfile = zip_files[i], exdir = extracted_f
 
 ### Mapbiomas color codes
 source(paste0(project_path, "r/get-data/get-mapbiomas-colors.R"))
+
+
+inra <- vect(paste0(dropbox_path, "data/constructed-data/INRA_TITULADOS_resaved_fixed.gpkg"))
+
+names(inra)
+
+table(table(inra$NombrePlan))
