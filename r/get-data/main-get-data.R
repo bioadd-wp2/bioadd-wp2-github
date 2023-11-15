@@ -56,6 +56,11 @@ file.copy(from = paste0(dropbox_path, "data/constructed-data/INRA_TITULADOS_resa
 file.copy(from = paste0(dropbox_path, "data/raw-data/bolivia-electricity-utilities/"), to = paste0(project_path, "data/raw/csv/"), overwrite = TRUE, recursive = TRUE)
 
 
+### FIRMS fires data
+
+file.copy(from = paste0(dropbox_path, "data/raw-data/shapefiles/FIRMS/"), to = paste0(project_path, "data/raw/shp/"), overwrite = TRUE, recursive = TRUE)
+
+
 
 #######################################################################
 ### Unzip shapefiles

@@ -29,7 +29,9 @@ folders_list <- list(
 					)
 				),
 			gpkg = list(),
-			shp  = list(),
+			shp  = list(
+				firms = list()
+				),
 			csv  = list()
 			),
 

@@ -45,7 +45,6 @@ filenames$vector$inra <- lapply(list(
     simplified = "INRA_titulados_resaved_fixed_simplified"
     ), function(x) paste0(project_path, "data/constructed/gpkg/", x, ".gpkg"))
 
-
 filenames$vector$protected_areas <- lapply(list(
     national_2014 = "ap_nacional_wgs84_2014",
     national_2015 = "areas_protegidas_nacionales042015",
@@ -60,12 +59,15 @@ filenames$vector$protected_areas <- lapply(list(
     municipal_2015 = "areas_protegidas_municipales042015"
     ), function(x) paste0(project_path, "data/raw/shp/", x, "/", x, ".shp"))
 
+filenames$vector$firms <- paste0(project_path, "data/raw/shp/FIRMS/fire_archive_M-C61_396738.shp")
+
 
 ### Csv files
 
 filenames$csv$mapbiomas_colors <- paste0(project_path, "data/constructed/csv/mapbiomas_colors.csv")
 
 filenames$csv$electricity_utilities <- paste0(project_path, "data/raw/csv/bolivia-electricity-utilities/")
+
 
 
 ################################
