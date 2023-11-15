@@ -1,0 +1,505 @@
+---
+title: "Data viz: forest transitions in Bolivia"
+
+author:
+- name: Lorenzo Sileci
+  email: l.sileci@lse.ac.uk
+  affiliation: LSE, Department of Geography and Environment; Grantham Research Institute for Climate Change and the Environment
+- name: Ville Inkinen
+  email: ville.inkinen@economics.gu.se
+  affiliation: University of Gothenburg, Department of Economics
+
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    theme: cerulean 
+    highlight: tango
+---
+```{r class.source = "fold-show", setup, include=FALSE}
+knitr::opts_knit$set(root.dir = '~/Dropbox/BIOADD/Work_Packages/WP2/data/constructed-data')
+```
+
+
+
+```{r,  message=FALSE, echo = F, warning=FALSE}
+
+#Import libraries and data: 
+
+library(tidyverse)
+library(leaflet)
+library(units)
+library(sf)
+
+load("hansen_gain_adm3.RData")
+hansen_gain = hansen_adm3
+load("mapbiomas_adm3.RData")
+load("hansen_adm3.RData")
+load("tmf_adm3.RData")
+ville = read_sf("mapbiomas_gain_adm3.gpkg")
+
+# Manipulate data
+
+hansen_adm3 = hansen_adm3 %>% 
+  st_transform(5356) %>% 
+  mutate(area = (units::drop_units(st_area(.)))*1e-4) %>% 
+  st_transform(4326) %>% 
+  mutate(hansen_treecover_2000 = hansen_treecover_2000*0.09,
+           hansen_deforestation_NA =    hansen_deforestation_NA*area,
+         hansen_deforestation_2001 =  hansen_deforestation_2001*area,
+         hansen_deforestation_2002 =  hansen_deforestation_2002*area,
+         hansen_deforestation_2003 =  hansen_deforestation_2003*area,
+         hansen_deforestation_2004 =  hansen_deforestation_2004*area,
+         hansen_deforestation_2005 =  hansen_deforestation_2005*area,
+         hansen_deforestation_2006 =  hansen_deforestation_2006*area,
+         hansen_deforestation_2007 =  hansen_deforestation_2007*area,
+         hansen_deforestation_2008 =  hansen_deforestation_2008*area,
+         hansen_deforestation_2009 =  hansen_deforestation_2009*area,
+         hansen_deforestation_2010 =  hansen_deforestation_2010*area,
+         hansen_deforestation_2011 =  hansen_deforestation_2011*area,
+         hansen_deforestation_2012 =  hansen_deforestation_2012*area,
+         hansen_deforestation_2013 =  hansen_deforestation_2013*area,
+         hansen_deforestation_2014 =  hansen_deforestation_2014*area,
+         hansen_deforestation_2015 =  hansen_deforestation_2015*area,
+         hansen_deforestation_2016 =  hansen_deforestation_2016*area,
+         hansen_deforestation_2017 =  hansen_deforestation_2017*area,
+         hansen_deforestation_2018 =  hansen_deforestation_2018*area,
+         hansen_deforestation_2019 =  hansen_deforestation_2019*area) %>% 
+  mutate(hansen_deforestation = rowSums(across(starts_with("hansen_deforestation_2")))) %>% 
+  select(one_of(c("country","admin_1", "admin_2", "admin_3", "hansen_deforestation", 
+                  "geometry")))
+
+
+hansen_gain =  hansen_gain %>%
+  mutate(gain_ha = hansen_gain*0.09) 
+
+tmf_adm3 = tmf_adm3 %>% 
+  rename(undisturbed = tmf_1,
+         degraded = tmf_2,
+         deforested = tmf_3,
+         regrowth = tmf_4) %>% 
+  st_transform(5356) %>% 
+  mutate(area = (units::drop_units(st_area(.)))*1e-4) %>% 
+  st_transform(4326) %>% 
+  mutate(
+         undisturbed = undisturbed*area,
+         degraded  =  degraded*area,
+         deforested =  deforested*area,
+         regrowth =  regrowth*area) %>% 
+  select(-one_of(c("tmf_5", "tmf_6", "tmf_0", "area"))) %>% 
+  pivot_wider(
+    names_from = "year",
+    values_from = c("undisturbed", "degraded", "deforested", "regrowth")) %>% 
+  mutate(degradation = degraded_2021 - degraded_2000,
+         deforestation = deforested_2021 - deforested_2000,
+         regrowth = regrowth_2021-regrowth_2000, 
+         intact = undisturbed_2021) %>% 
+  select(one_of(c("country","admin_1", "admin_2", "admin_3", "degradation", "deforestation", "regrowth", "intact", 
+                  "geometry")))
+
+
+mapbiomas_adm3 = mapbiomas_adm3 %>% 
+  st_transform(5356) %>% 
+  mutate(area = (units::drop_units(st_area(.)))*1e-4) %>% 
+  st_transform(4326) %>% 
+  mutate(forest = (mapbiomas_3 + mapbiomas_6)*area) %>% 
+  select(one_of(c("country","admin_1", "admin_2", "admin_3", "year", "forest", "geometry"))) %>% 
+  pivot_wider(
+    names_from = "year",
+    values_from = "forest",
+    names_prefix = "forest_") %>% 
+  mutate(mapbiomas_deforestation = forest_2000 - forest_2019) %>% 
+  select(one_of(c("country","admin_1", "admin_2", "admin_3", "year", "mapbiomas_deforestation", "geometry"))) %>% 
+  left_join(st_drop_geometry(hansen_adm3), by = c("country","admin_1", "admin_2", "admin_3")) 
+
+ville = ville %>% 
+  rename(admin_3 = ADM3_ES,
+         admin_2 = ADM2_ES,
+         admin_1 = ADM1_ES) %>% 
+  st_transform(5356) %>% 
+  mutate(area = (units::drop_units(st_area(.)))*1e-4) %>% 
+  st_transform(4326) %>% 
+  mutate(hansen_gain_ville = pct_hansen_forestgain*area,
+         mapbiomas_gain_ville = pct_mapbiomas_forestgain*area) %>% 
+  select(one_of(c("admin_1", "admin_2", "admin_3", "hansen_gain_ville", "mapbiomas_gain_ville"))) %>% 
+  mutate(difference_gain = mapbiomas_gain_ville-hansen_gain_ville)
+
+hansen_mapbiomas = hansen_gain %>% 
+  left_join(st_drop_geometry(ville), by = c("admin_1", "admin_2", "admin_3")) %>% 
+  mutate_at(vars(hansen_gain_ville, mapbiomas_gain_ville, difference_gain), ~replace_na(., 0))
+
+```
+
+### Regrowth: Hansen vs Mapbiomas 2000-2012 {.tabset .tabset-fade .tabset-pills}
+
+
+```{r,  message=FALSE, echo = F}
+
+# Set palettes
+pal_gain <- colorQuantile("Greens", domain = hansen_mapbiomas$hansen_gain_ville, probs = c(0, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1))
+pal_mapb <- colorQuantile("Blues", domain = hansen_mapbiomas$mapbiomas_gain_ville, probs = c(0, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1))
+pal_diff <- colorQuantile("Purples", domain = hansen_mapbiomas$difference_gain, probs = c(0, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1))
+
+# Set labels
+labels_gain <- sprintf(
+  "<strong>%s</strong><br/>%g ha",
+  hansen_mapbiomas$admin_3, hansen_mapbiomas$hansen_gain_ville
+) %>% lapply(htmltools::HTML)
+
+labels_mapb <- sprintf(
+  "<strong>%s</strong><br/>%g ha",
+  hansen_mapbiomas$admin_3, hansen_mapbiomas$mapbiomas_gain_ville
+) %>% lapply(htmltools::HTML)
+
+labels_diff <- sprintf(
+  "<strong>%s</strong><br/>%g ha",
+  hansen_mapbiomas$admin_3, hansen_mapbiomas$difference_gain
+) %>% lapply(htmltools::HTML)
+
+
+# Build Leaflet map
+gain_ha_map = leaflet(hansen_mapbiomas) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(
+    fillColor = ~pal_gain(hansen_gain_ville),
+    weight = 0.5,
+    opacity = 1,
+    color = "grey",
+    dashArray = "",
+    group = "Hansen Forest Gain",
+    fillOpacity = 0.85,
+    highlightOptions = highlightOptions(
+      weight = 4,
+      color = "darkgrey",
+      dashArray = "",
+      fillOpacity = 0.85,
+      bringToFront = TRUE),
+    label = labels_gain,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addPolygons(
+    fillColor = ~pal_mapb(mapbiomas_gain_ville),
+    weight = 0.5,
+    opacity = 1,
+    color = "grey",
+    dashArray = "",
+    group = "Mapbiomas Forest Gain",
+    fillOpacity = 0.85,
+    highlightOptions = highlightOptions(
+      weight = 4,
+      color = "darkgrey",
+      dashArray = "",
+      fillOpacity = 0.85,
+      bringToFront = TRUE),
+    label = labels_mapb,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addPolygons(
+    fillColor = ~pal_diff(difference_gain),
+    weight = 0.5,
+    opacity = 1,
+    color = "grey",
+    dashArray = "",
+    group = "Difference in Forest Gain",
+    fillOpacity = 0.85,
+    highlightOptions = highlightOptions(
+      weight = 4,
+      color = "darkgrey",
+      dashArray = "",
+      fillOpacity = 0.85,
+      bringToFront = TRUE),
+    label = labels_diff,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addLegend("topleft", pal = pal_gain, values = ~hansen_gain_ville,
+    title = "Hansen Forest Gain",
+    opacity = 1, 
+    labFormat = function(type, cuts, p) {
+    n = length(cuts)
+    paste0(round(cuts, 1)[-n], " - ", round(cuts, 1)[-1], " ha")
+  },
+    group = "Hansen Forest Gain") %>%
+  addLegend("bottomleft", pal = pal_mapb, values = ~mapbiomas_gain_ville,
+    title = "Mapbiomas Forest Gain",
+    opacity = 1, 
+    labFormat = function(type, cuts, p) {
+    n = length(cuts)
+    paste0(round(cuts, 1)[-n], " - ", round(cuts, 1)[-1], " ha")
+  },
+    group = "Mapbiomas Forest Gain") %>%
+  addLegend("bottomright", pal = pal_diff, values = ~difference_gain,
+    title = "Difference in Forest Gain",
+    opacity = 1, 
+    labFormat = function(type, cuts, p) {
+    n = length(cuts)
+    paste0(round(cuts, 1)[-n], " - ", round(cuts, 1)[-1], " ha")
+  },
+    group = "Difference in Forest Gain") %>%
+  addLayersControl(
+    overlayGroups = c("Hansen Forest Gain","Mapbiomas Forest Gain","Difference in Forest Gain"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>% 
+  hideGroup("Mapbiomas Forest Gain") %>%
+  hideGroup("Difference in Forest Gain")
+
+# Print map
+gain_ha_map
+
+```
+
+
+### Deforestation: Hansen vs Mapbiomas 2000-2019 {.tabset .tabset-fade .tabset-pills}
+
+
+```{r,  message=FALSE, echo = F}
+
+# Set palettes
+pal_mb <- colorQuantile("Spectral", domain = mapbiomas_adm3$mapbiomas_deforestation, reverse = T, probs = c(0, 0.2, 0.4, 0.6, 0.7, 0.8, 0.9, 1))
+pal_ha <- colorQuantile("YlOrRd", domain = mapbiomas_adm3$hansen_deforestation,  probs = c(0, 0.2, 0.4, 0.6, 0.7, 0.8, 0.9, 1))
+
+# Set labels
+labels_mb <- sprintf(
+  "<strong>%s</strong><br/>%g ha",
+  mapbiomas_adm3$admin_3, mapbiomas_adm3$mapbiomas_deforestation
+) %>% lapply(htmltools::HTML)
+
+labels_ha <- sprintf(
+  "<strong>%s</strong><br/>%g ha",
+  mapbiomas_adm3$admin_3, mapbiomas_adm3$hansen_deforestation
+) %>% lapply(htmltools::HTML)
+
+
+# Build Leaflet map
+mb_map = leaflet(mapbiomas_adm3) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(
+    fillColor = ~pal_mb(mapbiomas_deforestation),
+    weight = 0.5,
+    opacity = 1,
+    color = "grey",
+    dashArray = "",
+    group = "Mapbiomas Deforestation 2000-2019",
+    fillOpacity = 0.85,
+    highlightOptions = highlightOptions(
+      weight = 4,
+      color = "darkgrey",
+      dashArray = "",
+      fillOpacity = 0.85,
+      bringToFront = TRUE),
+    label = labels_mb,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addPolygons(
+    fillColor = ~pal_ha(hansen_deforestation),
+    weight = 0.5,
+    opacity = 1,
+    color = "grey",
+    dashArray = "",
+    group = "Hansen Deforestation 2000-2019",
+    fillOpacity = 0.85,
+    highlightOptions = highlightOptions(
+      weight = 4,
+      color = "darkgrey",
+      dashArray = "",
+      fillOpacity = 0.85,
+      bringToFront = TRUE),
+    label = labels_ha,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto"))  %>%
+  addLegend("topleft", pal = pal_mb, values = ~mapbiomas_deforestation,
+    title = "Mapbiomas Deforestation 2000-2019",
+    opacity = 1, 
+    labFormat = function(type, cuts, p) {
+    n = length(cuts)
+    paste0(round(cuts, 1)[-n], " - ", round(cuts, 1)[-1], " ha")
+  },
+    group = "Mapbiomas Deforestation 2000-2019") %>%
+  addLegend("topright", pal = pal_ha, values = ~hansen_deforestation,
+    title = "Hansen Deforestation 2000-2019",
+    opacity = 1, 
+    labFormat = function(type, cuts, p) {
+    n = length(cuts)
+    paste0(round(cuts, 1)[-n], " - ", round(cuts, 1)[-1], " ha")
+  },
+    group = "Hansen Deforestation 2000-2019") %>% 
+  addLayersControl(
+    overlayGroups = c("Mapbiomas Deforestation 2000-2019", "Hansen Deforestation 2000-2019"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>% 
+  hideGroup("Hansen Deforestation 2000-2019")
+
+
+# Print map
+mb_map
+
+```
+
+
+### EU TMF Data 2000-2021 {.tabset .tabset-fade .tabset-pills}
+
+
+```{r,  message=FALSE, echo = F}
+
+# Set palettes
+pal_int<- colorQuantile("Greens", domain = tmf_adm3$intact, probs = c(0, 0.5, 0.6, 0.7, 0.8, 0.9, 1))
+pal_deg <- colorQuantile("Blues", domain = tmf_adm3$degradation, probs = c(0, 0.6, 0.7, 0.8, 0.9, 1))
+pal_def <- colorQuantile("Reds", domain = tmf_adm3$deforestation, probs = c(0, 0.5, 0.6, 0.7, 0.8, 0.9, 1))
+pal_reg <- colorQuantile("Purples", domain = tmf_adm3$regrowth, probs = c(0, 0.5, 0.6, 0.7, 0.8, 0.9, 1))
+
+# Set labels
+labels_int <- sprintf(
+  "<strong>%s</strong><br/>%g ha",
+  tmf_adm3$admin_3, tmf_adm3$intact
+) %>% lapply(htmltools::HTML)
+
+labels_deg <- sprintf(
+  "<strong>%s</strong><br/>%g ha",
+  tmf_adm3$admin_3, tmf_adm3$degradation
+) %>% lapply(htmltools::HTML)
+
+labels_def <- sprintf(
+  "<strong>%s</strong><br/>%g ha",
+  tmf_adm3$admin_3, tmf_adm3$deforestation
+) %>% lapply(htmltools::HTML)
+
+labels_reg <- sprintf(
+  "<strong>%s</strong><br/>%g ha",
+  tmf_adm3$admin_3, tmf_adm3$regrowth
+) %>% lapply(htmltools::HTML)
+
+
+# Build Leaflet map
+tmf_map = leaflet(tmf_adm3) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolygons(
+    fillColor = ~pal_int(intact),
+    weight = 0.5,
+    opacity = 1,
+    color = "grey",
+    dashArray = "",
+    group = "Intact Forest 2021",
+    fillOpacity = 0.85,
+    highlightOptions = highlightOptions(
+      weight = 4,
+      color = "darkgrey",
+      dashArray = "",
+      fillOpacity = 0.85,
+      bringToFront = TRUE),
+    label = labels_int,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addPolygons(
+    fillColor = ~pal_deg(degradation),
+    weight = 0.5,
+    opacity = 1,
+    color = "grey",
+    dashArray = "",
+    group = "Forest Degradation 2000-2021",
+    fillOpacity = 0.85,
+    highlightOptions = highlightOptions(
+      weight = 4,
+      color = "darkgrey",
+      dashArray = "",
+      fillOpacity = 0.85,
+      bringToFront = TRUE),
+    label = labels_deg,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addPolygons(
+    fillColor = ~pal_def(deforestation),
+    weight = 0.5,
+    opacity = 1,
+    color = "grey",
+    dashArray = "",
+    group = "Deforestation 2000-2021",
+    fillOpacity = 0.85,
+    highlightOptions = highlightOptions(
+      weight = 4,
+      color = "darkgrey",
+      dashArray = "",
+      fillOpacity = 0.85,
+      bringToFront = TRUE),
+    label = labels_def,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addPolygons(
+    fillColor = ~pal_reg(regrowth),
+    weight = 0.5,
+    opacity = 1,
+    color = "grey",
+    dashArray = "",
+    group = "Forest Regrowth 2000-2021",
+    fillOpacity = 0.85,
+    highlightOptions = highlightOptions(
+      weight = 4,
+      color = "darkgrey",
+      dashArray = "",
+      fillOpacity = 0.85,
+      bringToFront = TRUE),
+    label = labels_reg,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addLegend("topleft", pal = pal_int, values = ~intact,
+    title = "Intact Forest 2021",
+    opacity = 1, 
+    labFormat = function(type, cuts, p) {
+    n = length(cuts)
+    paste0(round(cuts, 1)[-n], " - ", round(cuts, 1)[-1], " ha")
+  },
+    group = "Intact Forest 2021") %>%
+  addLegend("topright", pal = pal_deg, values = ~degradation,
+    title = "Forest Degradation 2000-2021",
+    opacity = 1, 
+    labFormat = function(type, cuts, p) {
+    n = length(cuts)
+    paste0(round(cuts, 1)[-n], " - ", round(cuts, 1)[-1], " ha")
+  },
+    group = "Forest Degradation 2000-2021") %>%
+  addLegend("bottomleft", pal = pal_def, values = ~deforestation,
+    title = "Deforestation 2000-2021",
+    opacity = 1, 
+    labFormat = function(type, cuts, p) {
+    n = length(cuts)
+    paste0(round(cuts, 1)[-n], " - ", round(cuts, 1)[-1], " ha")
+  },
+    group = "Deforestation 2000-2021") %>%
+  addLegend("bottomright", pal = pal_reg, values = ~regrowth,
+    title = "Forest Regrowth 2000-2021",
+    opacity = 1, 
+    labFormat = function(type, cuts, p) {
+    n = length(cuts)
+    paste0(round(cuts, 1)[-n], " - ", round(cuts, 1)[-1], " ha")
+  },
+    group = "Forest Regrowth 2000-2021") %>%
+  addLayersControl(
+    overlayGroups = c("Intact Forest 2021","Forest Degradation 2000-2021","Deforestation 2000-2021", "Forest Regrowth 2000-2021"),
+    options = layersControlOptions(collapsed = FALSE)
+  ) %>% 
+  hideGroup("Forest Degradation 2000-2021") %>%
+  hideGroup("Deforestation 2000-2021") %>% 
+  hideGroup("Forest Regrowth 2000-2021")
+
+
+# Print map
+tmf_map
+
+```
+
+

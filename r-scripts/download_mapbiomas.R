@@ -28,6 +28,7 @@ download_url_2017 <- "https://storage.googleapis.com/mapbiomas-public/initiative
 download_url_2018 <- "https://storage.googleapis.com/mapbiomas-public/initiatives/bolivia/collection_1/lclu/coverage/bolivia_coverage_2018.tif"
 download_url_2019 <- "https://storage.googleapis.com/mapbiomas-public/initiatives/bolivia/collection_1/lclu/coverage/bolivia_coverage_2019.tif"
 download_url_2020 <- "https://storage.googleapis.com/mapbiomas-public/initiatives/bolivia/collection_1/lclu/coverage/bolivia_coverage_2020.tif"
+download_url_2021 <- "https://storage.googleapis.com/mapbiomas-public/initiatives/bolivia/collection_1/lclu/coverage/bolivia_coverage_2021.tif"
 
 
 # Set file name in Dropbox folder
@@ -52,6 +53,7 @@ mapbiomas_2017 <- file.path(raw_data, "mapbiomas_2017.tif")
 mapbiomas_2018 <- file.path(raw_data, "mapbiomas_2018.tif")
 mapbiomas_2019 <- file.path(raw_data, "mapbiomas_2019.tif")
 mapbiomas_2020 <- file.path(raw_data, "mapbiomas_2020.tif")
+mapbiomas_2021 <- file.path(raw_data, "mapbiomas_2021.tif")
 
 # download the file
 download.file(download_url_2000, mapbiomas_2000)
@@ -75,3 +77,6 @@ download.file(download_url_2017, mapbiomas_2017)
 download.file(download_url_2018, mapbiomas_2018)
 download.file(download_url_2019, mapbiomas_2019)
 download.file(download_url_2020, mapbiomas_2020)
+download.file(download_url_2021, mapbiomas_2021)
+
+
