@@ -1,0 +1,37 @@
+# 2023/09/22
+# Ville Inkinen
+# BIOADD Work Package 2
+# 
+# Instructions
+
+
+FIRST TIME RUNNING THE CODE
+
+Set folder paths
+
+- You will need to set the folder path to the GitHub repository clone manually:
+	- In your R console, run getwd() and note the returned folder. E.g. "C:/Users/vpi201/OneDrive - University of Exeter/Documents"
+	- Navigate to that folder and there create a .txt file named "bioadd-wp2-paths.txt"
+	- On the first line of bioadd-wp2-paths.txt, enter the folder path of your local clone of the project GitHub repository, e.g. "C:/GitHub/bioadd-wp2-github/" (omit the quotation marks)
+    - On the second line, enter the path to the project Dropbox folder, e.g. "C:/Users/ville/Dropbox/Work Packages/WP2/"
+	- The slashes must be forward slashes: /
+- The script setup.R, which you will run in the beginning of every session, will check that you have correctly specified the folder
+- setup.R will create the remaining folder structure within the project folder
+
+
+GENERAL INSTRUCTIONS
+
+- Data will be downloaded in the folder ~/data/
+    - GitHub will not track the contents in the data folder.
+
+- You should save any output in the folder ~/output/
+    - GitHub will not track the contents of this folder. Share results primarily through Dropbox.
+
+- You can store your own R scripts in the folder ~/r/local/
+    - GitHub will not track the contents of this folder, so you are free to use this folder as you please.
+
+- Share your code in the folder ~/r/share/
+    - GitHub tracks this folder
+    - Use this folder for sharing your code with others
+    - Please include date and author name in any script that you save here
+    - No other rules. The purpose of this folder is to facilitate experimenting and collaboration.
