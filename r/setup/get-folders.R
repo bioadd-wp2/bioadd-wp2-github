@@ -40,7 +40,10 @@ folders_list <- list(
 		constructed = list(
 			raster = list(),
 			gpkg = list(),
-			csv = list()
+			csv = list(),
+			shp = list(
+				`modis-burned-area` = list()
+				)
 		)
 	),
 
