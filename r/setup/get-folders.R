@@ -32,7 +32,9 @@ folders_list <- list(
 			shp  = list(
 				firms = list()
 				),
-			csv  = list()
+			csv  = list(
+				firms = list()
+				)
 			),
 
 		constructed = list(

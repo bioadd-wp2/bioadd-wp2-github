@@ -11,18 +11,18 @@
 options(timeout = 6000)
 
 # Mapbiomas Bolivia
-source(paste0(project_path, "r/get-data/download-mapbiomas.R"))
+source(paste0(project_path, "r/get-data/download-mapbiomas.R"), local = new.env())
 
 # Mapbiomas Bolivia transitions
-source(paste0(project_path, "r/get-data/download-mapbiomas-transitions.R"))
+source(paste0(project_path, "r/get-data/download-mapbiomas-transitions.R"), local = new.env())
 
 # Hansen
-source(paste0(project_path, "r/get-data/download-hansen.R"))
+source(paste0(project_path, "r/get-data/download-hansen.R"), local = new.env())
 
 ### Night lights
 
 # Harmonized night lights
-source(paste0(project_path, "r/get-data/download-nightlights-harmonized.R"))
+source(paste0(project_path, "r/get-data/download-nightlights-harmonized.R"), local = new.env())
 
 # DMSP-OLS annual composites 1992-2013
 # Total download size:  11.7 GB
@@ -34,8 +34,13 @@ source(paste0(project_path, "r/get-data/download-nightlights-harmonized.R"))
 # Total extracted size: 108.2 GB
 # source(paste0(project_path, "r/get-data/download-viirs.R"))
 
+
+# FIRMS fires data for Bolivia
+source(paste0(project_path, "r/get-data/download-firms.R"), local = new.env())
+
+
 # Miscellaneous downloads
-source(paste0(project_path, "r/get-data/download-misc.R"))
+source(paste0(project_path, "r/get-data/download-misc.R"), local = new.env())
 
 
 #######################################################################
@@ -56,12 +61,6 @@ file.copy(from = paste0(dropbox_path, "data/constructed-data/INRA_TITULADOS_resa
 file.copy(from = paste0(dropbox_path, "data/raw-data/bolivia-electricity-utilities/"), to = paste0(project_path, "data/raw/csv/"), overwrite = TRUE, recursive = TRUE)
 
 
-### FIRMS fires data
-
-file.copy(from = paste0(dropbox_path, "data/raw-data/shapefiles/FIRMS/"), to = paste0(project_path, "data/raw/shp/"), overwrite = TRUE, recursive = TRUE)
-
-
-
 #######################################################################
 ### Unzip shapefiles
 
@@ -71,12 +70,6 @@ extracted_folders <- gsub(".zip", "/", zip_files)
 for (i in 1:length(zip_files)) unzip(zipfile = zip_files[i], exdir = extracted_folders[i])
 
 
+
 ### Mapbiomas color codes
-source(paste0(project_path, "r/get-data/get-mapbiomas-colors.R"))
-
-
-inra <- vect(paste0(dropbox_path, "data/constructed-data/INRA_TITULADOS_resaved_fixed.gpkg"))
-
-names(inra)
-
-table(table(inra$NombrePlan))
+source(paste0(project_path, "r/get-data/get-mapbiomas-colors.R"), local = new.env())

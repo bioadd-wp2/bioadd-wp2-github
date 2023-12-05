@@ -59,7 +59,8 @@ filenames$vector$protected_areas <- lapply(list(
     municipal_2015 = "areas_protegidas_municipales042015"
     ), function(x) paste0(project_path, "data/raw/shp/", x, "/", x, ".shp"))
 
-filenames$vector$firms <- paste0(project_path, "data/raw/shp/FIRMS/fire_archive_M-C61_396738.shp")
+filenames$vector$firms <- paste0(project_path, "data/constructed/gpkg/firms_bolivia.gpkg")
+filenames$vector$firms_polygons <- paste0(project_path, "data/constructed/gpkg/firms_polygons_bolivia.gpkg")
 
 
 ### Csv files
