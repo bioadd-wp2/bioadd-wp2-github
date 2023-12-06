@@ -8,7 +8,7 @@
 library(rgee)
 
 # initializing GEE
-rgee::ee_Initialize(drive = T)
+rgee::ee_Initialize(drive = TRUE)
 
 # Set the MODIS product 
 modis_product <- "MODIS/061/MCD64A1"
@@ -23,7 +23,7 @@ convertToPolygons <- function(image) {
   burnedAreas <- burnedArea$reduceToVectors(
     geometry = bolivia,
     scale = 500,
-    geometryType = 'polygon',
+    geometryType = "polygon",
     eightConnected = FALSE,
     labelProperty = "BurnDate",
     maxPixels = 1e13
@@ -56,7 +56,7 @@ for(year in years) {
     fileFormat = "SHP",
     folder = "Bolivia",
     description = paste0("burnt_", year),
-    timePrefix=F
+    timePrefix = FALSE
   )
   task_vector$start()
   ee_monitoring(task_vector) # optional
@@ -64,8 +64,8 @@ for(year in years) {
 }
 
 # Set the source and destination paths
-source_path <- "G:/My Drive/Bolivia"
-destination_path <- "C:/GitHub/bioadd-wp2-github/data/constructed/shp/modis-burned-area"
+source_path <- "G:/My Drive/Bolivia/"
+destination_path <- paste0(project_path, "data/constructed/shp/modis-burned-area/")
 
 # Get a list of files in the source directory
 files_to_copy <- list.files(source_path)
@@ -89,8 +89,3 @@ for (file in files_to_copy) {
     print(paste("File", destination_file, "already exists. Skipping."))
   }
 }
-
-
-
-
-

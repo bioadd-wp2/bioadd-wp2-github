@@ -39,6 +39,11 @@ source(paste0(project_path, "r/get-data/download-nightlights-harmonized.R"), loc
 source(paste0(project_path, "r/get-data/download-firms.R"), local = new.env())
 
 
+# MODIS Burned Area from Google Earth Engine
+source(paste0(project_path, "r/get-data/get-polygonised-modis-ba.R"), local = new.env())
+
+
+
 # Miscellaneous downloads
 source(paste0(project_path, "r/get-data/download-misc.R"), local = new.env())
 
