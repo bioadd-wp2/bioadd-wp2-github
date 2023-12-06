@@ -18,7 +18,7 @@ ParGetForestLoss <- function(raster_pair_path, out_folder) {
     year2 <- as.numeric(sub(".+_(\\d{4}).tif", "\\1", basename(raster_pair_path[2])))
 
     if ((year2 - year1) == 1) {
-        as.numeric( (r1 %in% c(3,6)) & !(r2 %in% c(3,6)) ) |> terra::writeRaster(paste0(out_folder, "forest_loss_", year2, ".tif"), layer = paste0("forest_loss", year2), overwrite = TRUE)
+        as.numeric( (r1 %in% c(3,6)) & !(r2 %in% c(3,6)) ) |> terra::writeRaster(paste0(out_folder, "forest_loss_", year2, ".tif"), overwrite = TRUE)
         return(0)
     } else {
         return(1)
