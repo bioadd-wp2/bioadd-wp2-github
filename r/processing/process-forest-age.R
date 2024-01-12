@@ -54,9 +54,6 @@ output_folder <- paste0(project_path, "data/constructed/raster/mapbiomas-forest-
 if (!dir.exists(output_folder)) dir.create(output_folder)
 
 # Parallelize
-# This took X hours on 6 cores on 32GB and 5900X
-
-t0 <- Sys.time()
 
 registerDoParallel(cores = 6)
 
@@ -65,7 +62,3 @@ registerDoParallel(cores = 6)
     }
 
 stopImplicitCluster()
-
-t1 <- Sys.time()
-
-t1-t0
