@@ -10,6 +10,7 @@
 #
 
 # This function calculates survival lengths for one gain cohort
+# May be overly complicated; see process-forest-age.R for a method with using Mapbiomas land cover directly
 
 getSurvivalLength <- function(year_gain, files_gain, files_loss, out_folder) {
 
