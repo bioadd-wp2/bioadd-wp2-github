@@ -40,7 +40,7 @@ getAge <- function(year, files_mapbiomas, out_folder) {
     }
 
     # Save to disk
-    r_age |> terra::writeRaster(paste0(out_folder, "forest_age_", year, ".tif"), overwrite = TRUE, gdal=c("COMPRESS=LZW"))
+    r_age |> terra::writeRaster(paste0(out_folder, "forest_age_", year, ".tif"), overwrite = TRUE, gdal = c("COMPRESS=LZW"))
 
     # Exit status
     return(0)
