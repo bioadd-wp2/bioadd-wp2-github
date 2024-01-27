@@ -6,8 +6,7 @@ dt <- fread(filenames$ml_demo$master_dt, colClasses = c(cell = "numeric"))
 
 in_folder <- paste0(project_path, "data/constructed/csv/ml-demo-extracted/")
 
-e_list <- lapply(list.files(in_folder, recursive = TRUE, full.names = TRUE), fread)
-
+e_list <- lapply(list.files(in_folder, recursive = TRUE, full.names = TRUE), fread, colClasses = c(cell = "numeric"))
 
 
 for (i in 1:length(e_list)) {
@@ -26,11 +25,8 @@ for (i in 1:length(e_list)) {
 
     }
 
-
-
-
 }
 
 
-
+dt |> fwrite(filenames$ml_demo$master_dt)
 

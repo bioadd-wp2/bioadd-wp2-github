@@ -38,7 +38,14 @@ folders_list <- list(
 			),
 
 		constructed = list(
-			raster = list(),
+			raster = list(
+				`mapbiomas-transitions` = list(
+					`forest-gain` = list(),
+					`forest-loss` = list(),
+					`forest-gain-transitions` = list(),
+					`forest-loss-transitions` = list()
+					)
+				),
 			gpkg = list(),
 			csv = list(),
 			shp = list(
