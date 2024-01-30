@@ -5,7 +5,7 @@ r_s <- rast(filenames$ml_demo$sampling_raster)
 
 # Sampling
 
-n <- 10^7
+n <- 2*10^7
 set.seed(1000)
 s <- data.table(spatSample(x = r_s, size = n, method = "regular", xy = TRUE, cells = TRUE, as.df = TRUE))
 
