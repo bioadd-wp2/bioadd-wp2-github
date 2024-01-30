@@ -17,7 +17,6 @@ source(paste0(ml_demo_path, "filenames.R"))
 
 source(paste0(ml_demo_path, "functions/function-extractRaster.R"))
 
-
 ### Processing
 
 # Ever gain raster and "sampling raster" required for sampling further down. 
