@@ -12,10 +12,7 @@ parResample <- function(i, r_paths, r_s_path, out_folder) {
 	r_resampled <- resample(r, r_s, method = "bilinear")
 	r_resampled |> writeRaster(paste0(out_folder, "/nightlights_harmonized_bolivia_", r_name), overwrite = TRUE)
 
-
 }
-
-
 
 # Parallelize
 
@@ -28,7 +25,3 @@ registerDoParallel(cores = 6)
     }
 
 stopImplicitCluster()
-
-
-
-
