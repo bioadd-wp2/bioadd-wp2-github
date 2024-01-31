@@ -9,8 +9,8 @@ parResample <- function(i, r_paths, r_s_path, out_folder) {
 	r_name <- basename(r_paths[[i]])
 	r_s <- rast(r_s_path)
 
-	r_resampled <- resample(r, r_s, method = "bilinear")
-	r_resampled |> writeRaster(paste0(out_folder, "/nightlights_harmonized_bolivia_", r_name), overwrite = TRUE)
+	r_resampled <- resample(r, r_s, method = "bilinear", threads = FALSE) # Do not use multiple threads as this function will be parallelized over
+	r_resampled |> writeRaster(paste0(out_folder, "/", r_name), overwrite = TRUE)
 
 }
 
