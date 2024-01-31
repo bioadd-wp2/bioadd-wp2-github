@@ -28,6 +28,7 @@ source(paste0(ml_demo_path, "processing/process-sampling-raster.R"), local = new
 # Process data sources
 
 source(paste0(ml_demo_path, "processing/process-inra.R"), local = new.env())
+source(paste0(ml_demo_path, "processing/process-night-lights.R"), local = new.env())
 
 
 # Sample pixels
