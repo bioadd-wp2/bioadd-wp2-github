@@ -8,7 +8,7 @@ r_s <- rast(filenames$ml_demo$sampling_raster)
 
 # Edits
 
-inra$cohort <- as.numeric(substr(inra$FechaResol, 7,10 ))
+inra$cohort <- as.numeric(substr(inra$FechaResol, 7, 10))
 inra[!is.na(inra$cohort) & inra$cohort == 5,]$cohort <- 2005
 
 inra_reproj <- project(inra, r_s)
