@@ -21,7 +21,9 @@ plot(r_roads)
 lines(roads_sf_buffered, col="gray", lwd=1, alpha = .01)
 
 # Save raster file
-r_roads |> writeRaster(filenames$ml_demo$r_roads, overwrite = TRUE)
+outpath <- "C:/GitHub/bioadd-wp2-github/r/share/ml-demo/r_roads.tif"
+terra::writeRaster(r_roads, outpath,  overwrite = TRUE)
+#r_roads |> writeRaster(filenames$ml_demo$r_roads, overwrite = TRUE)
 
 
 
@@ -45,7 +47,12 @@ plot(roads_raster_Yapacani)
 lines(roads_buffered_sf, col="gray", lwd=1, alpha = .2)
 
 # Distance to road
-distance_to_road <- terra::distance(x = roads_raster_Yapacani)
+#distance_to_road <- terra::distance(x = roads_raster_Yapacani)
+
+# Distance to road (aggregated)
+r_ds <- aggregate(roads_raster_Yapacani, 40, "max", na.rm = TRUE)
+distance_to_road <- terra::distance(x = r_ds)
+plot(distance_to_road)
 
 # Road density
 
@@ -62,6 +69,7 @@ focal_window <- matrix(1, nrow = win_size, ncol = win_size)
 
 # Calculate road density using the focal function
 road_density <- focal(roads_raster_Yapacani, w = focal_window, fun = sum, na.rm = TRUE)
+plot(road_density)
 
 # Normalize road density by the number of cells in the focal window to get a density measure
 total_cells_in_window <- win_size^2
