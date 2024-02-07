@@ -17,7 +17,7 @@ test <- st_read("C:/Users/sm1383/Dropbox/BioAdd/Data/Yapacani.shp")
 # ==============================================================================
 # Bolivia
 # ==============================================================================
-{
+
   # Buffer road vectors
   roads_buff <- st_buffer(roads, dist = 100)
   
@@ -27,7 +27,7 @@ test <- st_read("C:/Users/sm1383/Dropbox/BioAdd/Data/Yapacani.shp")
   # Save raster file
   outpath <- "C:/GitHub/bioadd-wp2-github/r/share/ml-demo/r_roads.tif"
   terra::writeRaster(r_roads, outpath,  overwrite = TRUE)
-}
+
 # ==============================================================================
 # Test municipality: Yapacani
 # ==============================================================================
