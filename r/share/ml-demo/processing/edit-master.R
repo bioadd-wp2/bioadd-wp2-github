@@ -26,15 +26,15 @@ dt[, c_diff := NULL]
 dt[, mb_ref_no := cumsum(c(0, mb_ref[-1]))*mb_forest, by = .(cell)]
 dt[, mb_def_no := cumsum(c(0, mb_def[-1]))*mb_nonforest, by = .(cell)]
 
-dt[, mb_ref_slen := sum(mb_forest) * as.numeric(mb_ref_no>0), by = .(cell, mb_ref_no)]
-dt[, mb_def_slen := sum(mb_nonforest) * as.numeric(mb_def_no>0), by = .(cell, mb_def_no)]
+dt[, mb_ref_slen := sum(mb_forest) * as.numeric(mb_ref_no > 0), by = .(cell, mb_ref_no)]
+dt[, mb_def_slen := sum(mb_nonforest) * as.numeric(mb_def_no > 0), by = .(cell, mb_def_no)]
 
 
 dt[, mbtr_ref_no := cumsum(c(0, mbtr_ref[-1])) * mb_forest, by = .(cell)]
 dt[, mbtr_def_no := cumsum(c(0, mbtr_def[-1])) * mb_nonforest, by = .(cell)]
 
-dt[, mbtr_ref_slen := sum(mb_forest) * as.numeric(mbtr_ref_no>0), by = .(cell, mbtr_ref_no)]
-dt[, mbtr_def_slen := sum(mb_nonforest) * as.numeric(mbtr_def_no>0), by = .(cell, mbtr_def_no)]
+dt[, mbtr_ref_slen := sum(mb_forest) * as.numeric(mbtr_ref_no > 0), by = .(cell, mbtr_ref_no)]
+dt[, mbtr_def_slen := sum(mb_nonforest) * as.numeric(mbtr_def_no > 0), by = .(cell, mbtr_def_no)]
 
 
 

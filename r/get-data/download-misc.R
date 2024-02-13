@@ -7,7 +7,6 @@ download.file(
 	)
 
 
-
 ### WFS requests from GeoBolivia server
 # The WFS request URL is obtained from the GeoBolivia data viewer: Add the layer to the viewer -> Actions -> Download layer -> SHAPE-ZIP
 

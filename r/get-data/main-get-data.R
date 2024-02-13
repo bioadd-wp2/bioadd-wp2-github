@@ -19,8 +19,6 @@ source(paste0(project_path, "r/get-data/download-mapbiomas-transitions.R"), loca
 # Hansen
 source(paste0(project_path, "r/get-data/download-hansen.R"), local = new.env())
 
-### Night lights
-
 # Harmonized night lights
 source(paste0(project_path, "r/get-data/download-nightlights-harmonized.R"), local = new.env())
 
@@ -40,6 +38,10 @@ source(paste0(project_path, "r/get-data/download-firms.R"), local = new.env())
 
 
 # MODIS Burned Area from Google Earth Engine
+source(paste0(project_path, "r/get-data/get-polygonised-modis-ba.R"), local = new.env())
+
+
+# Migration data from Niva et al. 2023, https://doi.org/10.5281/zenodo.7997134
 source(paste0(project_path, "r/get-data/get-polygonised-modis-ba.R"), local = new.env())
 
 

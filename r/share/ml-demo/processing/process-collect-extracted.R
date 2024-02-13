@@ -13,15 +13,15 @@ for (i in 1:length(e_list)) {
 
     names_i <- names(e_list[[i]])
 
-    if (length(names_i) != 3 | !("cell" %in% names_i) | !("year" %in% names_i)) {
+    if (!("cell" %in% names_i) | !("year" %in% names_i)) {
 
-        print("Error: input column names not as expected")
+        print("Error: Input column names not as expected. Data not joined to master.")
 
     } else {
 
-        varname <- names_i[!(names_i %in% c("cell", "year"))]
+        varnames <- names_i[!(names_i %in% c("cell", "year"))]
 
-        dt[e_list[[i]], (varname) := setDT(mget(paste0("i.", varname))), on = .(cell, year)]
+        dt[e_list[[i]], (varnames) := setDT(mget(paste0("i.", varnames))), on = .(cell, year)]
 
     }
 
