@@ -10,7 +10,7 @@
 
 # Read data
 roads <- st_read("C:/Users/sm1383/Dropbox/NERC BIG BOI/Work Packages/WP2/data/Caminos/Caminos.shp")
-r_s <- rast("C:/GitHub/bioadd-wp2-github/data/constructed/raster/misc/ml-demo/ml_demo_sample_mask.tif")
+r_s <- rast(paste0(project_path, "/data/constructed/raster/misc/ml-demo/ml_demo_sample_mask.tif"))
 test <- st_read("C:/Users/sm1383/Dropbox/BioAdd/Data/Yapacani.shp")
 
 

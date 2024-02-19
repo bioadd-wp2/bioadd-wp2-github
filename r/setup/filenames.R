@@ -19,7 +19,7 @@ filenames$raster$mapbiomas <- lapply(setNames(                                  
 
 filenames$raster$mapbiomas_transitions <- lapply(setNames(                                   
             as.list(paste0("bolivia_transitions_", 1985:2020, "_", 1986:2021, ".tif")),
-            paste0("bolivia_transitions_", 1986:2021)                            # Naming by end year
+            paste0("bolivia_transitions_", 1986:2021)                            # Naming by the transition end year
         ), function(x) paste0(project_path, "data/raw/raster/mapbiomas-transitions/", x))
 
 filenames$raster$gmted <- lapply(list(
@@ -61,6 +61,9 @@ filenames$vector$protected_areas <- lapply(list(
 
 filenames$vector$firms <- paste0(project_path, "data/constructed/gpkg/firms_bolivia.gpkg")
 filenames$vector$firms_polygons <- paste0(project_path, "data/constructed/gpkg/firms_polygons_bolivia.gpkg")
+
+filenames$vector$roads_2001 <- paste0(project_path, "data/raw/shp/Caminos/Caminos.shp")
+filenames$vector$roads_2016 <- paste0(project_path, "data/raw/shp/CAMINOS_Y_VIA_FERREA/CAMINOS_Y_VIA_FERREA.shp")
 
 
 ### Csv files

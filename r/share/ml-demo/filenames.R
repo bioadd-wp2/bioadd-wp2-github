@@ -9,3 +9,6 @@ filenames$ml_demo$inra_rasterized <- paste0(project_path, "data/constructed/rast
 filenames$ml_demo$inra_rasterized_cohort <- paste0(project_path, "data/constructed/raster/misc/ml-demo/inra_rasterized_cohort.tif")
 
 filenames$ml_demo$r_roads <- paste0(project_path, "data/constructed/raster/misc/ml-demo/roads.tif")
+
+filenames$ml_demo$bolivia_mask <- paste0(project_path, "data/constructed/raster/misc/ml-demo/bolivia_mask.tif")
+filenames$ml_demo$bolivia_mask_polygon <- paste0(project_path, "data/constructed/raster/misc/ml-demo/bolivia_mask_polygon.gpkg")
