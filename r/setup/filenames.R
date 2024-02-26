@@ -46,19 +46,19 @@ filenames$vector$inra <- lapply(list(
     simplified = "INRA_titulados_resaved_fixed_simplified"
     ), function(x) paste0(project_path, "data/constructed/gpkg/", x, ".gpkg"))
 
-filenames$vector$protected_areas <- lapply(list(
-    national_2014 = "ap_nacional_wgs84_2014",
-    national_2015 = "areas_protegidas_nacionales042015",
-    national_2016 = "areasprotegidas_nacionales2016",
-    national_2017 = "areasprotegidas_nacionales2017",
-    national_2018 = "AreaProtegida_Nacional_2018",
-    state_2002 = "APs_departamentales",
-    state_2012 = "ap_departamentales_wgs84_2012",
-    state_2015 = "areas_protegidas_departamentales42015",
-    municipal_2002 = "APs_municipales",
-    municipal_2012 = "ap_municipaleswgs84_2012",
-    municipal_2015 = "areas_protegidas_municipales042015"
-    ), function(x) paste0(project_path, "data/raw/shp/", x, "/", x, ".shp"))
+filenames$vector$protected_areas$points <- lapply(list(
+    national = "WDPA_WDOECM_Feb2024_Public_BOL_shp_0",
+    state ="WDPA_WDOECM_Feb2024_Public_BOL_shp_1",
+    municipal = "WDPA_WDOECM_Feb2024_Public_BOL_shp_2"
+    ), function(x) paste0(project_path, "data/raw/shp/WDPA_WDOECM_Feb2024_Public_BOL_shp/", x, "/WDPA_WDOECM_Feb2024_Public_BOL_shp-points.shp"))
+
+filenames$vector$protected_areas$polygons <- lapply(list(
+    national = "WDPA_WDOECM_Feb2024_Public_BOL_shp_0",
+    state ="WDPA_WDOECM_Feb2024_Public_BOL_shp_1",
+    municipal = "WDPA_WDOECM_Feb2024_Public_BOL_shp_2"
+    ), function(x) paste0(project_path, "data/raw/shp/WDPA_WDOECM_Feb2024_Public_BOL_shp/", x, "/WDPA_WDOECM_Feb2024_Public_BOL_shp-polygons.shp"))
+
+
 
 filenames$vector$firms <- paste0(project_path, "data/constructed/gpkg/firms_bolivia.gpkg")
 filenames$vector$firms_polygons <- paste0(project_path, "data/constructed/gpkg/firms_polygons_bolivia.gpkg")

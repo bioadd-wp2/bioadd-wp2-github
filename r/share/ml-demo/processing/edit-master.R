@@ -37,20 +37,35 @@ dt[, mb_ref_slen := sum(mb_forest) * as.numeric(mb_ref_idx > 0), by = .(cell, mb
 dt[, mb_def_slen := sum(mb_nonforest) * as.numeric(mb_def_idx > 0), by = .(cell, mb_def_idx)]
 
 
+# Mapbiomas transitions survival lengths
 
-dt[, mbtr_ref_idx := cumsum(c(0, mbtr_ref[-1])) - cumsum(c(0, mbtr_def[-1])), cell]
-dt[, mbtr_def_idx := cumsum(c(0, mbtr_def[-1])) * mb_nonforest, cell]
+    dt[, mbtr_ref_temp := as.numeric(cumsum(c(0, mbtr_ref[-1]))) , cell]
+    dt[, mbtr_def_temp := as.numeric(cumsum(c(0, mbtr_def[-1]))) , cell]
 
-dt[, mbtr_ref_slen := sum(mb_forest) * as.numeric(mbtr_ref_idx > 0), by = .(cell, mbtr_ref_idx)]
-dt[, mbtr_def_slen := sum(mb_nonforest) * as.numeric(mbtr_def_idx > 0), by = .(cell, mbtr_def_idx)]
+    dt[ever_ref_tr == 1, mbtr_ref_temp_first := min(year[mbtr_ref_temp > 0], na.rm = TRUE), cell]
+    dt[ever_def_tr == 1, mbtr_def_temp_first := min(year[mbtr_def_temp > 0], na.rm = TRUE), cell]
+
+    dt[mbtr_def_temp_first > mbtr_ref_temp_first, mbtr_ref_idx := mbtr_ref_temp*(mbtr_ref_temp - mbtr_def_temp ), cell]
+    dt[mbtr_def_temp_first < mbtr_ref_temp_first, mbtr_ref_idx := mbtr_ref_temp*(mbtr_ref_temp - mbtr_def_temp + 1), cell]
+
+    dt[mbtr_ref_temp_first > mbtr_def_temp_first, mbtr_def_idx := mbtr_def_temp*(mbtr_def_temp - mbtr_ref_temp ), cell]
+    dt[mbtr_ref_temp_first < mbtr_def_temp_first, mbtr_def_idx := mbtr_def_temp*(mbtr_def_temp - mbtr_ref_temp + 1), cell]
+
+    dt[mbtr_ref_idx > 0, mbtr_ref_slen := .N, by = .(cell, mbtr_ref_idx)]
+    dt[mbtr_def_idx > 0, mbtr_def_slen := .N, by = .(cell, mbtr_def_idx)]
+    dt[mbtr_ref_idx == 0, mbtr_ref_slen := 0, by = .(cell, mbtr_ref_idx)]
+    dt[mbtr_def_idx == 0, mbtr_def_slen := 0, by = .(cell, mbtr_def_idx)]
+
+    dt[, mbtr_ref_temp := NULL]
+    dt[, mbtr_def_temp := NULL]
+    dt[, mbtr_ref_temp_first := NULL]
+    dt[, mbtr_def_temp_first := NULL]
 
 
 # Examine
 
 dt[cell == "2283472212", .(year, mb, mb_ref, mb_def, mb_ref_idx, mb_def_idx, mb_ref_slen, mb_def_slen)]
 dt[cell == "2283472212", .(year, mb, mbtr_ref, mbtr_def, mbtr_ref_idx, mbtr_def_idx, mbtr_ref_slen, mbtr_def_slen)]
-
-
 
 # Create predictors based on mapbiomas history
 
