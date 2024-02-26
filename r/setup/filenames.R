@@ -24,7 +24,8 @@ filenames$raster$mapbiomas_transitions <- lapply(setNames(
 
 filenames$raster$gmted <- lapply(list(
     mean = "mn75_grd/mn75_grd/w001001.adf",
-    sd = "ds75_grd/ds75_grd/w001001.adf"
+    median = "md75_grd/md75_grd/w001001.adf",
+    sd = "sd75_grd/sd75_grd/w001001.adf"
     ), function(x) paste0(project_path, "data/raw/raster/gmted2010/", x))
 
 filenames$raster$nightlights <- lapply(setNames(                                       # Assigns a named list

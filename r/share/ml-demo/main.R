@@ -76,14 +76,33 @@ extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-transitions/forest-gain-transitions/"), full.names = TRUE), years = 1986:2021, varname = "mbtr_ref", by_cell_idx = FALSE)
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-transitions/forest-loss-transitions/"), full.names = TRUE), years = 1986:2021, varname = "mbtr_def", by_cell_idx = FALSE)
 
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/protected-areas/"), full.names = TRUE, pattern = "national"), years = 2014:2018, varname = "pa_national", by_cell_idx = FALSE)
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/protected-areas/"), full.names = TRUE, pattern = "state"), years = c(2002, 2012, 2015), varname = "pa_state", by_cell_idx = FALSE)
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/protected-areas/"), full.names = TRUE, pattern = "municipal"), years = c(2002, 2012, 2015), varname = "pa_municipal", by_cell_idx = FALSE)
+
+# Densities
+
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/forest/"), full.names = TRUE), years = 1985:2021, varname = "density_forest", by_cell_idx = FALSE)
-extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/farming/"), full.names = TRUE), years = 1985:2021, varname = "density_farming", by_cell_idx = FALSE)
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/farming/"), full.names = TRUE), years = 1985:2021, varname = "density_ag", by_cell_idx = FALSE)
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/water/"), full.names = TRUE), years = 1985:2021, varname = "density_water", by_cell_idx = FALSE)
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/24/"), full.names = TRUE), years = 1985:2021, varname = "density_urban", by_cell_idx = FALSE)
 
 extractRaster(r_paths = paste0(project_path, "data/constructed/raster/misc/ml-demo/road_density/road_density_1.tif"), years = 2001, varname = "density_road_pri", by_cell_idx = FALSE)
 extractRaster(r_paths = paste0(project_path, "data/constructed/raster/misc/ml-demo/road_density/road_density_2.tif"), years = 2001, varname = "density_road_sec", by_cell_idx = FALSE)
 extractRaster(r_paths = paste0(project_path, "data/constructed/raster/misc/ml-demo/road_density/road_density_3.tif"), years = 2001, varname = "density_road_ter", by_cell_idx = FALSE)
+
+# Densities within 200 pixel grid cell
+
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/forest-200/"), full.names = TRUE), years = 1985:2021, varname = "density_200_forest", by_cell_idx = FALSE)
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/farming-200/"), full.names = TRUE), years = 1985:2021, varname = "density_200_ag", by_cell_idx = FALSE)
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/water-200/"), full.names = TRUE), years = 1985:2021, varname = "density_200_water", by_cell_idx = FALSE)
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/urban-200/"), full.names = TRUE), years = 1985:2021, varname = "density_200_urban", by_cell_idx = FALSE)
+
+extractRaster(r_paths = paste0(project_path, "data/constructed/raster/misc/ml-demo/road_density_200/road_density_1.tif"), years = 2001, varname = "density_200_road_pri", by_cell_idx = FALSE)
+extractRaster(r_paths = paste0(project_path, "data/constructed/raster/misc/ml-demo/road_density_200/road_density_2.tif"), years = 2001, varname = "density_200_road_sec", by_cell_idx = FALSE)
+extractRaster(r_paths = paste0(project_path, "data/constructed/raster/misc/ml-demo/road_density_200/road_density_3.tif"), years = 2001, varname = "density_200_road_ter", by_cell_idx = FALSE)
+
+# Distances
 
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/distances/forest/"), full.names = TRUE), years = 1985:2021, varname = "dist_forest", by_cell_idx = FALSE)
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/distances/water/"), full.names = TRUE), years = 1985:2021, varname = "dist_water", by_cell_idx = FALSE)
@@ -97,10 +116,10 @@ extractRaster(r_paths = paste0(project_path, "data/constructed/raster/distances/
 extractRaster(r_paths = paste0(project_path, "data/constructed/raster/distances/roads/roads_2001_2.tif"), years = 2001, varname = "dist_road_sec", by_cell_idx = FALSE)
 extractRaster(r_paths = paste0(project_path, "data/constructed/raster/distances/roads/roads_2001_3.tif"), years = 2001, varname = "dist_road_ter", by_cell_idx = FALSE)
 
-extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/protected-areas/"), full.names = TRUE, pattern = "national"), years = 2014:2017, varname = "pa_national", by_cell_idx = FALSE)
-extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/protected-areas/"), full.names = TRUE, pattern = "state"), years = c(2002, 2012, 2015), varname = "pa_state", by_cell_idx = FALSE)
-extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/protected-areas/"), full.names = TRUE, pattern = "municipal"), years = c(2002, 2012, 2015), varname = "pa_municipal", by_cell_idx = FALSE)
+# Elevation (GMTED2010)
 
+extractRaster(r_paths = filenames$raster$gmted$mean, years = 2010, varname = "gmted_mean", by_cell_idx = FALSE)
+extractRaster(r_paths = filenames$raster$gmted$sd, years = 2010, varname = "gmted_sd", by_cell_idx = FALSE)
 
 
 # Initialize master data.table and collect extracted
@@ -108,12 +127,9 @@ extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster
 source(paste0(ml_demo_path, "processing/get-master.R"), local = new.env())
 source(paste0(ml_demo_path, "processing/process-collect-extracted.R"), local = new.env())
 
-dt <- fread(filenames$ml_demo$master_dt)
 
 # Edits to master
 
 source(paste0(ml_demo_path, "processing/edit-master.R"), local = new.env())
 
-
-# Any further pre-processing
 

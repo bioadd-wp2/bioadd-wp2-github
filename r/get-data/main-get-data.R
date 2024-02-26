@@ -8,7 +8,7 @@
 ### Downloads
 
 # The download of a single file must finish within the timeout value (seconds). You can increase this value if you get timeout errors.
-options(timeout = 6000)
+options(timeout = 60000)
 
 # Mapbiomas Bolivia
 source(paste0(project_path, "r/get-data/download-mapbiomas.R"), local = new.env())
@@ -44,6 +44,11 @@ source(paste0(project_path, "r/get-data/get-polygonised-modis-ba.R"), local = ne
 # Migration data from Niva et al. 2023, https://doi.org/10.5281/zenodo.7997134
 source(paste0(project_path, "r/get-data/get-polygonised-modis-ba.R"), local = new.env())
 
+# GMTED2010 elevation data 7.5 arc seconds
+source(paste0(project_path, "r/get-data/download-gmted2010.R"), local = new.env())
+
+# Protected areas
+source(paste0(project_path, "r/get-data/download-pa.R"), local = new.env())
 
 
 # Miscellaneous downloads
