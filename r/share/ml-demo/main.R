@@ -76,9 +76,9 @@ extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-transitions/forest-gain-transitions/"), full.names = TRUE), years = 1986:2021, varname = "mbtr_ref", by_cell_idx = FALSE)
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-transitions/forest-loss-transitions/"), full.names = TRUE), years = 1986:2021, varname = "mbtr_def", by_cell_idx = FALSE)
 
-extractRaster(r_paths = filenames$vector$protected_areas$polygons$national, years = 1985, varname = "pa_national", by_cell_idx = FALSE)
-extractRaster(r_paths = filenames$vector$protected_areas$polygons$state, years = 1985, varname = "pa_state", by_cell_idx = FALSE)
-extractRaster(r_paths = filenames$vector$protected_areas$polygons$municipal, years = 1985, varname = "pa_municipal", by_cell_idx = FALSE)
+extractRaster(r_paths = paste0(project_path, "data/constructed/raster/protected-areas/national.tif"), years = 1985, varname = "pa_national_id", by_cell_idx = FALSE)
+extractRaster(r_paths = paste0(project_path, "data/constructed/raster/protected-areas/state.tif"), years = 1985, varname = "pa_state_id", by_cell_idx = FALSE)
+extractRaster(r_paths = paste0(project_path, "data/constructed/raster/protected-areas/municipal.tif"), years = 1985, varname = "pa_municipal_id", by_cell_idx = FALSE)
 
 # Densities
 
@@ -120,6 +120,11 @@ extractRaster(r_paths = paste0(project_path, "data/constructed/raster/distances/
 
 extractRaster(r_paths = filenames$raster$gmted$mean, years = 2010, varname = "gmted_mean", by_cell_idx = FALSE)
 extractRaster(r_paths = filenames$raster$gmted$sd, years = 2010, varname = "gmted_sd", by_cell_idx = FALSE)
+
+
+# Modis burned area
+
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/modis-burned-area/"), full.names = TRUE), years = 2001:2021, varname = "modis_ba", by_cell_idx = FALSE)
 
 
 # Initialize master data.table and collect extracted

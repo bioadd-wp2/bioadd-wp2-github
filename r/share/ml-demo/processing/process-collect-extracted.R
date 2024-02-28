@@ -11,6 +11,8 @@ for (i in 1:length(e_list)) {
 
     names_i <- names(e_list[[i]])
 
+    cat(paste0(names_i, "\n"))
+
     if (!("cell" %in% names_i) | !("year" %in% names_i)) {
 
         print("Error: Input column names not as expected. Data not joined to master.")

@@ -67,13 +67,50 @@ dt[, mb_def_slen := sum(mb_nonforest) * as.numeric(mb_def_idx > 0), by = .(cell,
 dt[cell == "2283472212", .(year, mb, mb_ref, mb_def, mb_ref_idx, mb_def_idx, mb_ref_slen, mb_def_slen)]
 dt[cell == "2283472212", .(year, mb, mbtr_ref, mbtr_def, mbtr_ref_idx, mbtr_def_idx, mbtr_ref_slen, mbtr_def_slen)]
 
-# Create predictors based on mapbiomas history
+# Sums over previous 15 years, rolling sum
 
 dt[, mb_nchange_sum_15 := frollsum(mb_change, 15, align = "right", fill = NA), cell]
 dt[, mb_nref_sum_15 := frollsum(mb_ref, 15, align = "right", fill = NA), cell]
+dt[, mb_ndef_sum_15 := frollsum(mb_def, 15, align = "right", fill = NA), cell]
 dt[, mb_forest_sum_15 := frollsum(mb_forest, 15, align = "right", fill = NA), cell]
 dt[, mb_ag_sum_15 := frollsum(mb_ag, 15, align = "right", fill = NA), cell]
 dt[, mb_anthro_sum_15 := frollsum(mb_anthro, 15, align = "right", fill = NA), cell]
+
+# Years since forest etc
+
+dt[, mb_years_since_forest := year - frollapply(mb_forest * year, n = 15, FUN = "max", na.rm = TRUE, align = "right", fill = NA), cell]
+dt[, mb_years_since_nonforest := year - frollapply(mb_nonforest * year, n = 15, FUN = "max", na.rm = TRUE, align = "right", fill = NA), cell]
+dt[, mb_years_since_ag := year - frollapply(mb_ag * year, n = 15, FUN = "max", na.rm = TRUE, align = "right", fill = NA), cell]
+dt[, mb_years_since_anthro := year - frollapply(mb_anthro * year, n = 15, FUN = "max", na.rm = TRUE, align = "right", fill = NA), cell]
+dt[, mb_years_since_change := year - frollapply(mb_change * year, n = 15, FUN = "max", na.rm = TRUE, align = "right", fill = NA), cell]
+
+
+# Sums over previous 15 years, unique value per re/deforestation event representing 15 years prior to the event (-1 accounts )
+
+types <- c("ref", "def")
+vars <- c(
+    "mb_nchange_sum_15", "mb_nref_sum_15", "mb_forest_sum_15", "mb_ag_sum_15", "mb_anthro_sum_15",
+    "mb_years_since_forest", "mb_years_since_forest", "mb_years_since_ag", "mb_years_since_anthro", "mb_years_since_change"
+    )
+
+
+for (type in types) {
+    print(type)
+    if (type == "ref") dt[, typevar :=  mb_ref_idx]
+    if (type == "def") dt[, typevar :=  mb_def_idx]
+    for (var in vars) {
+        print(var)
+        dt[, temp_var := get(var)]
+        dt[, temp_lag := c(NA, temp_var[-.N]), .(cell)]
+        varname <- paste0(var, "_", type)
+        dt[, (varname) := temp_lag[year == min(year)], .(cell, typevar)]
+    }
+    dt[, typevar := NULL]
+}
+
+
+
+dt[cell == "2283472212", .(year, mb, mb_ref, mb_def, mb_ref_idx, mb_def_idx, mb_ref_slen, mb_def_slen, mb_years_since_forest, mb_years_since_forest_ref, mb_nchange_sum_15, mb_nchange_sum_15_ref, mb_forest_sum_15, mb_forest_sum_15_ref)]
 
 
 # Lags
@@ -94,42 +131,52 @@ for (i in 1:15) {
 }
 
 
+
+# Propagate various variables by cell
+
+    vars <- c("pa_national_id", "pa_state_id", "pa_municipal_id", "inra_objectid", "gmted_mean", "gmted_sd", "density_200_road_pri", "density_200_road_sec", "density_200_road_ter", "density_road_pri", "density_road_sec", "density_road_ter", "dist_road_pri", "dist_road_sec", "dist_road_ter")
+
+    for (var in vars) {
+        print(var)
+        dt[, temp := get(var)]
+        if (length(unique(dt[, .(n_unique = length( unique(temp[!is.na(temp)]) )[ !is.na( unique(temp[!is.na(temp)]) ) ]), cell]$n_unique)) > 1) print(paste0("Error in variable ", var, " ; non-unique values within cell."))
+        dt[, (var) := unique(temp[!is.na(temp)]), by = .(cell)]
+        dt[, temp := NULL]
+    }
+
+
 ### INRA data
 
-# Property variables
+    dt_inra <- as.data.table(vect(filenames$vector$inra$simplified))
 
-dt[, inra_objectid := unique(inra_objectid[!is.na(inra_objectid)]), cell]
+    colnames_old <- c("Clasificac", "Modalidad")
+    colnames_new <- paste0("inra_", tolower(colnames_old))
 
-dt_inra <- as.data.table(vect(filenames$vector$inra$simplified))
-
-colnames_old <- c("Clasificac", "Modalidad")
-colnames_new <- paste0("inra_", tolower(colnames_old))
-
-dt[dt_inra , (colnames_new) := setDT(mget(paste0("i.", colnames_old))) , on = .(inra_objectid = OBJECTID_12)]
+    dt[dt_inra , (colnames_new) := setDT(mget(paste0("i.", colnames_old))) , on = .(inra_objectid = OBJECTID_12)]
 
 
-table(dt$inra_clasificac)
+    table(dt$inra_clasificac)
 
-dt[, inra_clasificac_en := as.character(NA)]
-dt[inra_clasificac == "Comunal Forestal", inra_clasificac_en := "communal_forestry"]
-dt[inra_clasificac %in% c("Comunaria", "Comunidad", "Comunitaria", "Propiedad Comunaria"), inra_clasificac_en := "communal"]
-dt[inra_clasificac %in% c("Empresa", "Empresarial"), inra_clasificac_en := "enterprise"]
-dt[inra_clasificac %in% c("Mediana"), inra_clasificac_en := "medium_extension"]
-dt[grepl("Peque", inra_clasificac) | inra_clasificac == "Solar Campesino", inra_clasificac_en := "small_extension"]
-dt[inra_clasificac %in% c("Sin Calsificacion"), inra_clasificac_en := "not_classified"]
-dt[inra_clasificac %in% c("Territorio Indígena Originario Campesino", "Tierra Comunitaria de Origen"), inra_clasificac_en := "indigenous_territories"]
+    dt[, inra_clasificac_en := as.character(NA)]
+    dt[inra_clasificac == "Comunal Forestal", inra_clasificac_en := "communal_forestry"]
+    dt[inra_clasificac %in% c("Comunaria", "Comunidad", "Comunitaria", "Propiedad Comunaria"), inra_clasificac_en := "communal"]
+    dt[inra_clasificac %in% c("Empresa", "Empresarial"), inra_clasificac_en := "enterprise"]
+    dt[inra_clasificac %in% c("Mediana"), inra_clasificac_en := "medium_extension"]
+    dt[grepl("Peque", inra_clasificac) | inra_clasificac == "Solar Campesino", inra_clasificac_en := "small_extension"]
+    dt[inra_clasificac %in% c("Sin Calsificacion"), inra_clasificac_en := "not_classified"]
+    dt[inra_clasificac %in% c("Territorio Indígena Originario Campesino", "Tierra Comunitaria de Origen"), inra_clasificac_en := "indigenous_territories"]
 
-table(dt$inra_modalidad)
+    table(dt$inra_modalidad)
 
-dt[, inra_modalidad_en := as.character(NA)]
-dt[inra_modalidad == "CAT-SAN", inra_modalidad_en := "prev_national"]
-dt[inra_modalidad == "SAN-SIM", inra_modalidad_en := "prev_undefined_contested"]
-dt[inra_modalidad == "SAN-TCO", inra_modalidad_en := "indigenous"]
+    dt[, inra_modalidad_en := as.character(NA)]
+    dt[inra_modalidad == "CAT-SAN", inra_modalidad_en := "prev_national"]
+    dt[inra_modalidad == "SAN-SIM", inra_modalidad_en := "prev_undefined_contested"]
+    dt[inra_modalidad == "SAN-TCO", inra_modalidad_en := "indigenous"]
 
 
-dt[is.na(inra_cohort), inra_cohort := 0, cell]
-dt[, inra_cohort := max(inra_cohort, na.rm = TRUE), cell]
-dt[, inra_post := as.numeric(inra_cohort > 0 & year >= inra_cohort)]
+    dt[is.na(inra_cohort), inra_cohort := 0, cell]
+    dt[, inra_cohort := max(inra_cohort, na.rm = TRUE), cell]
+    dt[, inra_post := as.numeric(inra_cohort > 0 & year >= inra_cohort)]
 
 # Distance to property
 
@@ -148,36 +195,41 @@ dt[, inra_post := as.numeric(inra_cohort > 0 & year >= inra_cohort)]
     dt[, dist_inra_cumul := NULL]
 
 
-# Propagate various variables by cell
-
-    vars <- c("gmted_mean", "gmted_sd", "density_200_road_pri", "density_200_road_sec", "density_200_road_ter", "density_road_pri", "density_road_sec", "density_road_ter", "dist_road_pri", "dist_road_sec", "dist_road_ter")
-
-    for (var in vars) {
-        print(var)
-        dt[, temp := get(var)]
-        if (length(unique(dt[, .(n_unique = length(unique(temp[!is.na(temp)]))), cell]$n_unique)) > 1) print(paste0("Error in variable", var, " ; non-unique values within cell."))
-        dt[, (var) := unique(temp[!is.na(temp)]), by = .(cell)]
-        dt[, temp := NULL]
-    }
-
 
 # Burned area
 
-dt[, modis_burned := modis_ba]
-dt[is.na(modis_ba), modis_burned := 0]
+    dt[, modis_burned := modis_ba]
+    dt[is.na(modis_ba), modis_burned := 0]
 
-dt[, modis_ever_burned := as.numeric(sum(modis_ba, na.rm = TRUE) > 0), cell]
+    dt[, modis_burned_cumul := cumsum(modis_burned), cell]
+
+    dt[, modis_ever_burned := as.numeric(sum(modis_ba, na.rm = TRUE) > 0), cell]
 
 
 # Protected areas
 
-dt[is.na(pa_municipal), pa_municipal := 0]
-dt[is.na(pa_national),  pa_national := 0]
-dt[is.na(pa_state),     pa_state := 0]
+    dt_pa <- data.table::rbindlist(lapply(lapply(filenames$vector$protected_areas$polygons, vect), as.data.frame), id = "source")
+    dt_exclude <- fread(paste0(project_path, "data/constructed/csv/WDPA_exclusion.csv"))
 
-dt[, pa_municipal := as.numeric(cumsum(pa_municipal) > 0), cell]
-dt[, pa_national  := as.numeric(cumsum(pa_national) > 0), cell]
-dt[, pa_state     := as.numeric(cumsum(pa_state) > 0), cell]
+    # There are overlaps here (overlapping PA polygons). Nationally designated PAs take precedence
+
+    dt[!is.na(pa_municipal_id), pa_id := pa_municipal_id]
+    dt[!is.na(pa_state_id), pa_id := pa_state_id]
+    dt[!is.na(pa_national_id), pa_id := pa_national_id]
+
+    dt[dt_exclude, pa_keep := i.Polygons_OK, on = .(pa_id = WDPAID)]
+    dt[pa_keep == 1 & !is.na(pa_keep), pa_exclude := 0]
+    dt[pa_keep == 0 & !is.na(pa_keep), pa_exclude := 1]
+
+    colnames_pa <- c("source", "STATUS", "STATUS_YR")
+    colnames_pa_new <- c("pa_source", "pa_status", "pa_cohort" )
+
+    dt[dt_pa , (colnames_pa_new) := setDT(mget(paste0("i.", colnames_pa))) , on = .(pa_id = WDPAID)]
+
+    dt[, pa_post := as.numeric(year >= pa_cohort)]
+    dt[is.na(pa_post), pa_post := 0]
+
+
 
 
 # Save
