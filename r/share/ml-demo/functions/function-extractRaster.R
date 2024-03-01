@@ -52,7 +52,7 @@ extractRaster <- function(s_path = filenames$ml_demo$sample, r_s_path = filename
 
 	# Input checks
 
-    if (by_cell_idx == TRUE & checkRasters(r_s_path = r_s_path, r_paths = r_paths) == 1) stop("Input raster dimensions or extents do not match with sampling raster.")
+    if (by_cell_idx == TRUE & checkRasters(r_s_path = r_s_path, r_paths = r_paths) == 1) stop("Input raster dimensions or extents do not match with the sampling raster.")
 	if (length(years) != length(r_paths)) stop("Length of years does not match input rasters.")
 
 	if (!dir.exists(paste0(out_folder, "/", varname, "/"))) dir.create(paste0(out_folder, "/", varname, "/"))
