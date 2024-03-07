@@ -105,6 +105,7 @@ extractRaster(r_paths = paste0(project_path, "data/constructed/raster/misc/ml-de
 # Distances
 
 extractRaster(r_paths = list.files(paste0(data_path, "data/constructed/raster/distances/forest/"), full.names = TRUE), years = 1985:2021, varname = "dist_forest", by_cell_idx = FALSE, n_threads = 12)
+extractRaster(r_paths = list.files(paste0(data_path, "data/constructed/raster/distances/nonforest/"), full.names = TRUE), years = 1985:2021, varname = "dist_nonforest", by_cell_idx = FALSE, n_threads = 12)
 extractRaster(r_paths = list.files(paste0(data_path, "data/constructed/raster/distances/water/"), full.names = TRUE), years = 1985:2021, varname = "dist_water", by_cell_idx = FALSE, n_threads = 12)
 extractRaster(r_paths = list.files(paste0(data_path, "data/constructed/raster/distances/ag/"), full.names = TRUE), years = 1985:2021, varname = "dist_ag", by_cell_idx = FALSE, n_threads = 12)
 extractRaster(r_paths = list.files(paste0(data_path, "data/constructed/raster/distances/urban/"), full.names = TRUE), years = 1985:2021, varname = "dist_urban", by_cell_idx = FALSE, n_threads = 12)
@@ -150,3 +151,7 @@ editMaster(in_file = filenames$ml_demo$master_dt_collected_sampled, out_file = f
 editMaster(in_file = filenames$ml_demo$master_dt_collected_everref, out_file = filenames$ml_demo$master_dt_edited_everref)
 
 
+# REMINDER: water bodies not included in "natural", but are exluded form "non-natural". Natural non-forest = c(10,11,12,13), Nonnatural = c(15,18,21,24,25,30). In other words, they should be inlcuded as separate categories. Same for salt flat, glacier.
+# Nonforest = c(11,12,13,15,18,21,24,25,30,33,34,61), or !(3,6)
+# Natural non-forest = c(10,11,12,13)
+# Nonnatural = c(15,18,21,24,25,30)

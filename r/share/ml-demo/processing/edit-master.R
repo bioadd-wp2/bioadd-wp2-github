@@ -67,8 +67,8 @@ editMaster <- function(in_file, out_file){
 
     # Examine
 
-    dt[cell == "2283472212", .(year, mb, mb_ref, mb_def, mb_ref_idx, mb_def_idx, mb_ref_slen, mb_def_slen)]
-    dt[cell == "2283472212", .(year, mb, mbtr_ref, mbtr_def, mbtr_ref_idx, mbtr_def_idx, mbtr_ref_slen, mbtr_def_slen)]
+    #dt[cell == "2283472212", .(year, mb, mb_ref, mb_def, mb_ref_idx, mb_def_idx, mb_ref_slen, mb_def_slen)]
+    #dt[cell == "2283472212", .(year, mb, mbtr_ref, mbtr_def, mbtr_ref_idx, mbtr_def_idx, mbtr_ref_slen, mbtr_def_slen)]
 
     # Sums over previous 15 years, rolling sum
 
@@ -80,6 +80,9 @@ editMaster <- function(in_file, out_file){
     dt[, mb_anthro_sum_15 := frollsum(mb_anthro, 15, align = "right", fill = NA), cell]
 
     # Years since forest etc
+    # currently wrong, code when time allows
+
+    if (FALSE) {
 
     dt[, mb_years_since_forest := (year - frollapply(mb_forest * year, n = 15, FUN = "max", na.rm = TRUE, align = "right", fill = NA)), cell]
     dt[, mb_years_since_nonforest := year - frollapply(mb_nonforest * year, n = 15, FUN = "max", na.rm = TRUE, align = "right", fill = NA), cell]
@@ -95,11 +98,12 @@ editMaster <- function(in_file, out_file){
 
 
     # Sums over previous 15 years, unique value per re/deforestation event representing 15 years prior to the event
-
+    
+    
     types <- c("ref", "def")
     vars <- c(
-        "mb_nchange_sum_15", "mb_nref_sum_15", "mb_forest_sum_15", "mb_ag_sum_15", "mb_anthro_sum_15",
-        "mb_years_since_forest", "mb_years_since_nonforest", "mb_years_since_ag", "mb_years_since_anthro", "mb_years_since_change"
+        "mb_nchange_sum_15", "mb_nref_sum_15", "mb_forest_sum_15", "mb_ag_sum_15", "mb_anthro_sum_15"
+        #"mb_years_since_forest", "mb_years_since_nonforest", "mb_years_since_ag", "mb_years_since_anthro", "mb_years_since_change"
         )
 
     for (type in types) {
@@ -115,10 +119,10 @@ editMaster <- function(in_file, out_file){
         }
         dt[, typevar := NULL]
     }
+    }
 
 
-
-    dt[cell == "2283472212", .(year, mb, mb_ref, mb_def, mb_ref_idx, mb_def_idx, mb_ref_slen, mb_def_slen, mb_years_since_forest, mb_years_since_forest_ref, mb_nchange_sum_15, mb_nchange_sum_15_ref, mb_forest_sum_15, mb_forest_sum_15_ref)]
+    #dt[cell == "2283472212", .(year, mb, mb_ref, mb_def, mb_ref_idx, mb_def_idx, mb_ref_slen, mb_def_slen, mb_years_since_forest, mb_years_since_forest_ref, mb_nchange_sum_15, mb_nchange_sum_15_ref, mb_forest_sum_15, mb_forest_sum_15_ref)]
 
 
     # Lags
@@ -227,8 +231,6 @@ editMaster <- function(in_file, out_file){
         dt[ever_inra == 0, .(mean(dist_inra)), year]
 
 
-
-
     # Burned area
 
         dt[, modis_burned := modis_ba]
@@ -269,10 +271,11 @@ editMaster <- function(in_file, out_file){
     # These will be necessary for subsetting later on. Keep these strictly as last - might edit this procedure
 
     dt[, rid_nonforest := cumsum(mb_nonforest), cell]
+    dt[, rid_nonforest_cumul := cumsum(rid_nonforest), cell]
 
     dt[, mb_forest_diff := c(0, diff(mb_forest)), cell]
 
-    dt[, mb_ref_obs := as.numeric(mb_forest == 0 | mb_forest_diff == 1)]
+    dt[, mb_ref_obs := as.numeric(mb_forest == 0 | mb_forest_diff ==  1)]
     dt[, mb_def_obs := as.numeric(mb_forest == 1 | mb_forest_diff == -1)]
 
     dt[mb_ref_obs == 1, ref_cumsum := cumsum(mb_forest), cell]
@@ -281,9 +284,37 @@ editMaster <- function(in_file, out_file){
     dt[mb_def_obs == 1, def_cumsum := cumsum(mb_nonforest), cell]
     dt[mb_def_obs == 1, def_group := def_cumsum + as.numeric(mb_forest == 1), cell]
 
+    dt[, mb_forest_diff := NULL]
+    dt[, mb_ref_obs := NULL]
+    dt[, mb_def_obs := NULL]
+    dt[, ref_cumsum := NULL]
+    dt[, def_cumsum := NULL]
+
+    #
+
+    dt[, mb_char := as.character(mb)]
+    
+    # ref and def groups overlap ; need separate indicators unfortunately
+    dt[!is.na(ref_group), mb_char_baseline_ref := mb_char[1], .(cell, ref_group)]
+    dt[!is.na(def_group), mb_char_baseline_def := mb_char[1], .(cell, def_group)]
+
+    dt[!is.na(ref_group) & !is.na(mb_forest_sum_15), mb_forest_sum_15_baseline_ref := mb_forest_sum_15[1], .(cell, ref_group)]
+    dt[!is.na(def_group) & !is.na(mb_forest_sum_15), mb_forest_sum_15_baseline_def := mb_forest_sum_15[1], .(cell, def_group)]
+
+    dt[!is.na(ref_group) & !is.na(mb_anthro_sum_15), mb_anthro_sum_15_baseline_ref := mb_anthro_sum_15[1], .(cell, ref_group)]
+    dt[!is.na(def_group) & !is.na(mb_anthro_sum_15), mb_anthro_sum_15_baseline_def := mb_anthro_sum_15[1], .(cell, def_group)]
+
+    #
+    # dt[cell == 933816075, .(cell, year, mb_forest, mb_char, mb_char_baseline_ref, mb_char_baseline_def, mb_forest_sum_15, mb_anthro_sum_15, mb_forest, rid_nonforest, rid_nonforest_cumul, ref_group, def_group, mb_forest_sum_15_baseline_ref, mb_forest_sum_15_baseline_def, mb_anthro_sum_15_baseline_ref, mb_anthro_sum_15_baseline_def)]
+    # dt[rid_nonforest_cumul > 1, def_group_min :=  min(def_group, na.rm = TRUE), cell]
+    # dt[cell == 933816075 & rid_nonforest_cumul > 1 & def_group == def_group_min]
+    # dt[cell == 933816075]
+    # dt[cell == 933816075]
+    # dt[cell == 948787897]
+
+
     # Save
 
     dt |> fwrite(out_file)
-
 
 }

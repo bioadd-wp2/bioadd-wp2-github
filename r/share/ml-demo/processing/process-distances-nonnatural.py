@@ -5,14 +5,14 @@ feedback = QgsProcessingFeedback()
 
 project_path = 'E:/Dropbox/Dropbox/GitHub/bioadd-wp2-github/'
 
-r_dir = project_path + 'data/constructed/raster/mapbiomas-nonforest-bin/'
+r_dir = project_path + 'data/constructed/raster/mapbiomas-nonnatural-bin/'
 r_files = os.listdir(r_dir)
 
 for r in r_files:
     
     r_path = r_dir + r
     
-    out_path = 'D:/bioadd-wp2/data/constructed/raster/distances/nonforest/' + r
+    out_path = 'D:/bioadd-wp2/data/constructed/raster/distances/nonnatural/' + r
 
     params = {
             'INPUT': r_path,

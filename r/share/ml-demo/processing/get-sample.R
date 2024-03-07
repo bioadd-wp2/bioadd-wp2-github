@@ -6,7 +6,7 @@ r_s <- rast(filenames$ml_demo$sampling_raster)
 # Sampling
 
 n <- 2*10^6
-set.seed(1000)
+set.seed(2000)
 s <- data.table(spatSample(x = r_s, size = n, method = "regular", xy = TRUE, cells = TRUE, as.df = TRUE))
 
 value_col <- names(s)[!(names(s) %in% c("cell", "x", "y"))]
@@ -42,4 +42,3 @@ if (FALSE){
 # Save to disk
 
 s |> fwrite(filenames$ml_demo$sample)
-

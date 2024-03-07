@@ -1,6 +1,4 @@
 
-from datetime import datetime
-
 processing.algorithmHelp("gdal:proximity")
 
 feedback = QgsProcessingFeedback()
@@ -12,17 +10,14 @@ r_files = os.listdir(r_dir)
 
 for r in r_files:
     
-    print(str(datetime.now()) + ' | ' + r)
-    
     r_path = r_dir + r
     
-    out_path = project_path + 'data/constructed/raster/distances/forest/' + r
+    out_path = 'D:/bioadd-wp2/data/constructed/raster/distances/forest/' + r
 
     params = {
             'INPUT': r_path,
             'BAND': 1,
             'VALUES': 1, # Compute distance for raster pixel values of 1
-            'MAX_DISTANCE': 3000, # Max distance
             'REPLACE': 0, # Output value for no_data cells
             'NODATA': 0, # No_data value in output raster
             'OPTIONS': 'COMPRESS=LZW', # Enable LZW compression
