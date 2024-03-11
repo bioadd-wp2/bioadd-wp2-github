@@ -50,7 +50,8 @@ folders_list <- list(
 			csv = list(),
 			shp = list(
 				`modis-burned-area` = list()
-				)
+				),
+			rdata = list()
 		)
 	),
 

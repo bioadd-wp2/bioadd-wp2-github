@@ -6,14 +6,8 @@
 #
 
 ### Setup
+source(paste0(project_path, "r/share/ml-demo/setup.R"))
 
-# Code for the demo located in its own folder
-ml_demo_path <- paste0(project_path, "r/share/ml-demo/")
-
-# Constructed data stored in the project folder
-# Refer to files using filenames$ml_demo$--- ; defined in this script:
-source(paste0(ml_demo_path, "filenames.R"))
-source(paste0(ml_demo_path, "functions/function-extractRaster.R"))
 
 
 ### Processing
@@ -55,9 +49,6 @@ source(paste0(ml_demo_path, "processing/get-sample.R"), local = new.env())
 
 # Extracting from data stored on SSD is quite fast. Extracting from a HDD is slower, but increasing n_threads helps considerably (default is 4)
 
-# Path for external data storage. Use as an alternative project_path, and organize data accordingly
-data_path <- "D:/bioadd-wp2/"
-
 t0 <- Sys.time()
 extractRaster(r_paths = filenames$raster$mapbiomas, years = 1985:2021, varname = "mb", by_cell_idx = TRUE)
 
@@ -80,9 +71,14 @@ extractRaster(r_paths = paste0(project_path, "data/constructed/raster/protected-
 extractRaster(r_paths = paste0(project_path, "data/constructed/raster/protected-areas/state.tif"), years = 1985, varname = "pa_state_id", by_cell_idx = TRUE)
 extractRaster(r_paths = paste0(project_path, "data/constructed/raster/protected-areas/municipal.tif"), years = 1985, varname = "pa_municipal_id", by_cell_idx = TRUE)
 
+
 # Densities
 
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/forest/"), full.names = TRUE), years = 1985:2021, varname = "density_forest", by_cell_idx = FALSE)
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/nonforest/"), full.names = TRUE), years = 1985:2021, varname = "density_nonforest", by_cell_idx = FALSE)
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/natural-nonforest/"), full.names = TRUE), years = 1985:2021, varname = "density_natural_nonforest", by_cell_idx = FALSE)
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/nonnatural/"), full.names = TRUE), years = 1985:2021, varname = "density_nonnatural", by_cell_idx = FALSE)
+
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/farming/"), full.names = TRUE), years = 1985:2021, varname = "density_ag", by_cell_idx = FALSE)
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/water/"), full.names = TRUE), years = 1985:2021, varname = "density_water", by_cell_idx = FALSE)
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/24/"), full.names = TRUE), years = 1985:2021, varname = "density_urban", by_cell_idx = FALSE)
@@ -91,9 +87,14 @@ extractRaster(r_paths = paste0(project_path, "data/constructed/raster/misc/ml-de
 extractRaster(r_paths = paste0(project_path, "data/constructed/raster/misc/ml-demo/road_density/road_density_2.tif"), years = 2001, varname = "density_road_sec", by_cell_idx = FALSE)
 extractRaster(r_paths = paste0(project_path, "data/constructed/raster/misc/ml-demo/road_density/road_density_3.tif"), years = 2001, varname = "density_road_ter", by_cell_idx = FALSE)
 
+
 # Densities within 200 pixel grid cell
 
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/forest-200/"), full.names = TRUE), years = 1985:2021, varname = "density_200_forest", by_cell_idx = FALSE)
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/nonforest-200/"), full.names = TRUE), years = 1985:2021, varname = "density_200_nonforest", by_cell_idx = FALSE)
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/natural-nonforest-200/"), full.names = TRUE), years = 1985:2021, varname = "density_200_natural_nonforest", by_cell_idx = FALSE)
+extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/nonnatural-200/"), full.names = TRUE), years = 1985:2021, varname = "density_200_nonnatural", by_cell_idx = FALSE)
+
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/farming-200/"), full.names = TRUE), years = 1985:2021, varname = "density_200_ag", by_cell_idx = FALSE)
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/water-200/"), full.names = TRUE), years = 1985:2021, varname = "density_200_water", by_cell_idx = FALSE)
 extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster/mapbiomas-aggregated/urban-200/"), full.names = TRUE), years = 1985:2021, varname = "density_200_urban", by_cell_idx = FALSE)
@@ -106,6 +107,9 @@ extractRaster(r_paths = paste0(project_path, "data/constructed/raster/misc/ml-de
 
 extractRaster(r_paths = list.files(paste0(data_path, "data/constructed/raster/distances/forest/"), full.names = TRUE), years = 1985:2021, varname = "dist_forest", by_cell_idx = FALSE, n_threads = 12)
 extractRaster(r_paths = list.files(paste0(data_path, "data/constructed/raster/distances/nonforest/"), full.names = TRUE), years = 1985:2021, varname = "dist_nonforest", by_cell_idx = FALSE, n_threads = 12)
+extractRaster(r_paths = list.files(paste0(data_path, "data/constructed/raster/distances/natural-nonforest/"), full.names = TRUE), years = 1985:2021, varname = "dist_natural_nonforest", by_cell_idx = FALSE, n_threads = 12)
+extractRaster(r_paths = list.files(paste0(data_path, "data/constructed/raster/distances/nonnatural/"), full.names = TRUE), years = 1985:2021, varname = "dist_nonnatural", by_cell_idx = FALSE, n_threads = 12)
+
 extractRaster(r_paths = list.files(paste0(data_path, "data/constructed/raster/distances/water/"), full.names = TRUE), years = 1985:2021, varname = "dist_water", by_cell_idx = FALSE, n_threads = 12)
 extractRaster(r_paths = list.files(paste0(data_path, "data/constructed/raster/distances/ag/"), full.names = TRUE), years = 1985:2021, varname = "dist_ag", by_cell_idx = FALSE, n_threads = 12)
 extractRaster(r_paths = list.files(paste0(data_path, "data/constructed/raster/distances/urban/"), full.names = TRUE), years = 1985:2021, varname = "dist_urban", by_cell_idx = FALSE, n_threads = 12)
@@ -129,8 +133,8 @@ extractRaster(r_paths = list.files(paste0(project_path, "data/constructed/raster
 
 t1 <- Sys.time()
 t1-t0
-
 # Last run was 20min
+
 
 # Initialize master data.table and collect extracted
 
@@ -138,17 +142,10 @@ source(paste0(ml_demo_path, "processing/get-master.R"), local = new.env())
 source(paste0(ml_demo_path, "processing/process-collect-extracted.R"), local = new.env())
 
 
-
-# Here onwards needs some thought. Annoyance with very large file sizes that are difficult to predict before data collection. Ad hoc solution with additional sampling
-# Post-collection sampling; currently disabled because file size is tolerable
-source(paste0(ml_demo_path, "processing/process-post-collection-sampling.R"), local = new.env())
-
-
 # Edits to master
 
 source(paste0(ml_demo_path, "processing/edit-master.R"))
-editMaster(in_file = filenames$ml_demo$master_dt_collected_sampled, out_file = filenames$ml_demo$master_dt_edited_sampled)
-editMaster(in_file = filenames$ml_demo$master_dt_collected_everref, out_file = filenames$ml_demo$master_dt_edited_everref)
+editMaster(in_file = filenames$ml_demo$master_dt_collected, out_file = filenames$ml_demo$master_dt_edited, debug = FALSE)
 
 
 # REMINDER: water bodies not included in "natural", but are exluded form "non-natural". Natural non-forest = c(10,11,12,13), Nonnatural = c(15,18,21,24,25,30). In other words, they should be inlcuded as separate categories. Same for salt flat, glacier.

@@ -25,16 +25,16 @@
     fread() ->
     dt
 
-
 # Classifications for aggregation
+# Several processed layers will correspond to these classifications
 
-dt[value %in% c(1,3,6), class_forest := "forest"]
-dt[!(value %in% c(1,3,6)), class_forest := "nonforest"]
+dt[value %in% c(1,3,6), class_0 := "forest"]
+dt[!(value %in% c(1,3,6)), class_0 := "nonforest"]
 
-dt[value %in% c(1,3,6), class := "forest"]
-dt[value %in% c(10,11,12,13), class := "natural-nonforest"]
-dt[value %in% c(14,15,18,21,22,24,25,30), my_class := "nonnatural"]
-dt[value %in% c(26,33), class := "water"]
-dt[value %in% c(27,61,34), class := "other"]
+dt[value %in% c(1,3,6), class_1 := "forest"]
+dt[value %in% c(10,11,12,13), class_1 := "natural-nonforest"]
+dt[value %in% c(14,15,18,21,22,24,25,30), class_1 := "nonnatural"]
+dt[value %in% c(26,33), class_1 := "water"]
+dt[value %in% c(27,61,34), class_1 := "other"]
 
 dt |> fwrite(filenames$csv$mapbiomas_colors)

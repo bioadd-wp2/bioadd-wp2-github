@@ -6,11 +6,9 @@ filenames$ml_demo$sample <- paste0(project_path, "data/constructed/csv/ml_demo_s
 
 filenames$ml_demo$master_dt <- paste0(project_path, "/data/constructed/csv/ml_demo_master_dt.csv")
 filenames$ml_demo$master_dt_collected <- paste0(project_path, "/data/constructed/csv/ml_demo_master_dt_collected.csv")
-filenames$ml_demo$master_dt_collected_everref <- paste0(project_path, "/data/constructed/csv/ml_demo_master_dt_collected_everref.csv")
-filenames$ml_demo$master_dt_collected_sampled <- paste0(project_path, "/data/constructed/csv/ml_demo_master_dt_collected_sampled.csv")
+filenames$ml_demo$master_dt_edited <- paste0(project_path, "/data/constructed/csv/ml_demo_master_dt_edited.csv")
 
-filenames$ml_demo$master_dt_edited_everref <- paste0(project_path, "/data/constructed/csv/ml_demo_master_dt_edited_everref.csv")
-filenames$ml_demo$master_dt_edited_sampled <- paste0(project_path, "/data/constructed/csv/ml_demo_master_dt_edited_sampled.csv")
+filenames$ml_demo$esample_ranger_prepared <- paste0(project_path, "/data/constructed/csv/esample_ranger_prepared.csv")
 
 
 filenames$ml_demo$ever_gain_2000_2011 <- paste0(project_path, "/data/constructed/raster/mapbiomas-transitions/summaries/ever_gain_2000_2011.tif")
@@ -21,3 +19,4 @@ filenames$ml_demo$r_roads <- paste0(project_path, "data/constructed/raster/misc/
 
 filenames$ml_demo$bolivia_mask <- paste0(project_path, "data/constructed/raster/misc/ml-demo/bolivia_mask.tif")
 filenames$ml_demo$bolivia_mask_polygon <- paste0(project_path, "data/constructed/raster/misc/ml-demo/bolivia_mask_polygon.gpkg")
+

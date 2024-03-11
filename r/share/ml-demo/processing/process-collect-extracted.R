@@ -38,4 +38,6 @@ gc()
 
 # Save
 
+print("Collected data saved to filenames$ml_demo$master_dt_collected")
+
 dt |> fwrite(filenames$ml_demo$master_dt_collected)
