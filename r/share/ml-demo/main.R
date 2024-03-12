@@ -6,8 +6,8 @@
 #
 
 ### Setup
-source(paste0(project_path, "r/share/ml-demo/setup.R"))
 
+source(paste0(project_path, "r/share/ml-demo/setup.R"))
 
 
 ### Processing

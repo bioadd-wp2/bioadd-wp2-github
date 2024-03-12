@@ -19,7 +19,7 @@ for r in r_files:
             'BAND': 1,
             'VALUES': 1, # Compute distance for raster pixel values of 1
             'REPLACE': 0, # Output value for no_data cells
-            'NODATA': 0, # No_data value in output raster
+            'NODATA': 60000, # No_data value in output raster
             'OPTIONS': 'COMPRESS=LZW', # Enable LZW compression
             'DATA_TYPE': 2, # UInt16
             'OUTPUT': out_path

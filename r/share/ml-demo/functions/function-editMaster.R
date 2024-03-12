@@ -205,10 +205,11 @@ editMaster <- function(in_file, out_file, debug = FALSE){
         colnames(dt)[grepl("dist", colnames(dt))]
 
         dt[dist_ag == 0 & mb_ag == 0, dist_ag := 3001]
+        dt[dist_forest == 0 & mb_forest == 0, dist_ag := 3001]
         dt[dist_urban == 0 & mb != 24, dist_urban := 3001]
         dt[dist_water == 0 & !(mb %in% c(26, 33)), dist_water := 3001]
     
-
+        dt[dist_water == 0 & !(mb %in% c(26, 33))]
 
     # Burned area
 

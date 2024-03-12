@@ -10,7 +10,6 @@ filenames$ml_demo$master_dt_edited <- paste0(project_path, "/data/constructed/cs
 
 filenames$ml_demo$esample_ranger_prepared <- paste0(project_path, "/data/constructed/csv/esample_ranger_prepared.csv")
 
-
 filenames$ml_demo$ever_gain_2000_2011 <- paste0(project_path, "/data/constructed/raster/mapbiomas-transitions/summaries/ever_gain_2000_2011.tif")
 filenames$ml_demo$inra_rasterized <- paste0(project_path, "data/constructed/raster/misc/ml-demo/inra_rasterized.tif")
 filenames$ml_demo$inra_rasterized_cohort <- paste0(project_path, "data/constructed/raster/misc/ml-demo/inra_rasterized_cohort.tif")

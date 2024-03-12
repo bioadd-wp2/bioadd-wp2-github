@@ -2,9 +2,9 @@
 
 prepareDataRanger <- function(dt_path, esample_path, type, min_slen = 1, n_sample = 0, features_list, within_elements) {
 
-    cat("Preparing data ")
-
     dt <- fread(dt_path)
+
+    cat("Preparing data ")
 
     ### Check that features exist; get complete cases
 
@@ -57,6 +57,7 @@ prepareDataRanger <- function(dt_path, esample_path, type, min_slen = 1, n_sampl
             for (var in features_within) {
 
                 dt[, tempvar := get(var)]
+                dt[, (var) := NULL]
                 dt[, (var) := tempvar - mean(tempvar, na.rm = TRUE), cell]
                 dt[, tempvar := NULL]
 
@@ -75,8 +76,8 @@ prepareDataRanger <- function(dt_path, esample_path, type, min_slen = 1, n_sampl
         dt[death == 1, dist_forest    := dist_forest[year == death_year-1], .(cell, groupvar)]
         dt[death == 1, dist_nonforest := dist_nonforest[year == death_year-1], .(cell, groupvar)]
 
-        dt[death == 1, mb_years_since_forest    := (mb_years_since_forest[year == death_year-1] + 1), .(cell, groupvar)]
-        dt[death == 1, mb_years_since_nonforest := (mb_years_since_nonforest[year == death_year-1] + 1), .(cell, groupvar)]
+        #dt[death == 1, mb_years_since_forest    := (mb_years_since_forest[year == death_year-1] + 1), .(cell, groupvar)]
+        #dt[death == 1, mb_years_since_nonforest := (mb_years_since_nonforest[year == death_year-1] + 1), .(cell, groupvar)]
 
         dt[, death_year := NULL]
 
@@ -91,7 +92,7 @@ prepareDataRanger <- function(dt_path, esample_path, type, min_slen = 1, n_sampl
     rm(dt)
     gc()
 
-    cat(" | Done\n")
+    cat("done\n")
 
     return(0)
 

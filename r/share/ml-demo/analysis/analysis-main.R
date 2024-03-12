@@ -12,9 +12,7 @@ source(paste0(project_path, "r/share/ml-demo/setup.R"))
 ### Estimation
 source(paste0(project_path, "r/share/ml-demo/analysis/survival-forest-estimation.R"))
 
-
 ### Post estimation
-
 load(paste0(project_path, "data/constructed/rdata/ranger_results.RData"))
 
 
@@ -54,7 +52,8 @@ graphImportance <- function(r_list, n_vars) {
                 color = "black", fill = "white"
                 ) +
             ylim(c(0, max(r_dt$importance_scaled, na.rm = TRUE)*1.1)) +
-            theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) ->
+            scale_color_manual(values = c("black", "darkorange")) +
+            theme(axis.text.x = element_text(angle = 90, hjust = 1)) ->
             g
 
     return(g)
@@ -62,11 +61,12 @@ graphImportance <- function(r_list, n_vars) {
 }
 
 
-graphImportance(r_list = results_list[c("ref", "ref_min2")], n_vars = 30) -> g1
-graphImportance(r_list = results_list[c("def", "def_min2")], n_vars = 30) -> g2
+graphImportance(r_list = results_list[c("ref", "ref_min3")], n_vars = 20) -> g1
+graphImportance(r_list = results_list[c("def", "def_min3")], n_vars = 20) -> g2
+graphImportance(r_list = results_list[c("ref", "ref_within")], n_vars = 20) -> g3
+graphImportance(r_list = results_list[c("def", "def_within")], n_vars = 20) -> g4
 
-
-g1 | g2
+(g1 | g2) / (g3 | g4)
 
 
 
@@ -77,9 +77,15 @@ g1 | g2
 base_folder <- paste0("C:/temp/rf_predictions/")
 if (!dir.exists(base_folder)) dir.create(base_folder, recursive = TRUE)
 
-wrapPredictionMap(type = "ref", results_list = results_list, base_folder = base_folder)
-wrapPredictionMap(type = "def", results_list = results_list, base_folder = base_folder)
-wrapPredictionMap(type = "ref_min2", results_list = results_list, base_folder = base_folder)
-wrapPredictionMap(type = "def_min2", results_list = results_list, base_folder = base_folder)
+
+within_elements <- names(f_list)[!(names(f_list) %in% c("time_invariant", "ref", "def", "baseline", "outcome"))]
+features_within <- unlist(f_list[within_elements])
+
+wrapPredictionMap(type = "ref", results_list = results_list, base_folder = base_folder, out_folder_gif = paste0(project_path, "output/gif/prediction-maps/"), gif_only = FALSE)
+wrapPredictionMap(type = "def", results_list = results_list, base_folder = base_folder, out_folder_gif = paste0(project_path, "output/gif/prediction-maps/"), gif_only = FALSE)
+wrapPredictionMap(type = "ref_min3", results_list = results_list, base_folder = base_folder, out_folder_gif = paste0(project_path, "output/gif/prediction-maps/"), gif_only = FALSE)
+wrapPredictionMap(type = "def_min3", results_list = results_list, base_folder = base_folder, out_folder_gif = paste0(project_path, "output/gif/prediction-maps/"), gif_only = FALSE)
+wrapPredictionMap(type = "ref_within", results_list = results_list, base_folder = base_folder, out_folder_gif = paste0(project_path, "output/gif/prediction-maps/"), features_within = features_within, gif_only = FALSE)
+wrapPredictionMap(type = "def_within", results_list = results_list, base_folder = base_folder, out_folder_gif = paste0(project_path, "output/gif/prediction-maps/"), features_within = features_within, gif_only = FALSE)
 
 
