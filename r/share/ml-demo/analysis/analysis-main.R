@@ -16,6 +16,7 @@ source(paste0(project_path, "r/share/ml-demo/analysis/survival-forest-estimation
 load(paste0(project_path, "data/constructed/rdata/ranger_results.RData"))
 
 
+
 # Graph importance scores
 
 graphImportance <- function(r_list, n_vars) {
@@ -79,7 +80,7 @@ if (!dir.exists(base_folder)) dir.create(base_folder, recursive = TRUE)
 
 
 within_elements <- names(f_list)[!(names(f_list) %in% c("time_invariant", "ref", "def", "baseline", "outcome"))]
-features_within <- unlist(f_list[within_elements])
+features_within <- as.vector(unlist(f_list[within_elements]))
 
 wrapPredictionMap(type = "ref", results_list = results_list, base_folder = base_folder, out_folder_gif = paste0(project_path, "output/gif/prediction-maps/"), gif_only = FALSE)
 wrapPredictionMap(type = "def", results_list = results_list, base_folder = base_folder, out_folder_gif = paste0(project_path, "output/gif/prediction-maps/"), gif_only = FALSE)

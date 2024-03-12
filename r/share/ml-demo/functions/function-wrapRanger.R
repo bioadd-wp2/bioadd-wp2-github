@@ -13,6 +13,8 @@ wrapRanger <- function(dt_path, esample_path, type, min_slen = 1, n_sample = 0, 
     if (type == "def") features_list$ref <- NULL
     features_list$outcome <- NULL
 
+    cat("Training model ")
+
     fit <- ranger(
         formula = as.formula(paste0("Surv(year, death)", " ~ ", paste0(unique(unlist(features_list)), collapse = " + "))),
         data = esample_dt,
@@ -21,6 +23,8 @@ wrapRanger <- function(dt_path, esample_path, type, min_slen = 1, n_sample = 0, 
         num.threads = 20,
         oob.error = TRUE
     )
+
+    cat("done\n")
 
     ### Parse results
 

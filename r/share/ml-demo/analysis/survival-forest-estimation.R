@@ -23,7 +23,7 @@ f_list$def            <- c("dist_nonforest") #, "mb_years_since_nonforest")
 
 # All variables intended to only have one time-invariant value measured at the first observed year of the ref or def sequence
 # These are handled inside the wrapper function.
-f_list$baseline       <- c("mb_char", paste0("mb_lag_", 1:15)) #"mb_sum15_forest", "mb_sum15_nonforest",
+f_list$baseline       <- c(paste0("mb_lag_", 1:15)) #"mb_sum15_forest", "mb_sum15_nonforest",
 
 # The outcome variable will be based on this variable
 # Handled inside the wrapper function.

@@ -39,13 +39,15 @@ prepareDataRanger <- function(dt_path, esample_path, type, min_slen = 1, n_sampl
     ### Edits
 
         # Baseline variables: Set to baseline value
+        
+        if (!is.null(features_list$baseline)) {
+            for (var in features_list$baseline) {
 
-        for (var in features_list$baseline) {
+                dt[, tempvar := get(var)]
+                dt[, (var) := tempvar[1], .(cell, groupvar)]
+                dt[, tempvar := NULL]
 
-            dt[, tempvar := get(var)]
-            dt[, (var) := tempvar[1], .(cell, groupvar)]
-            dt[, tempvar := NULL]
-
+            }
         }
 
         # Within variables:
@@ -73,11 +75,11 @@ prepareDataRanger <- function(dt_path, esample_path, type, min_slen = 1, n_sampl
 
         dt[, death_year := year[death == 1], .(cell, groupvar)]
 
-        dt[death == 1, dist_forest    := dist_forest[year == death_year-1], .(cell, groupvar)]
-        dt[death == 1, dist_nonforest := dist_nonforest[year == death_year-1], .(cell, groupvar)]
+        if ("dist_forest" %in% colnames(dt)) dt[death == 1, dist_forest    := dist_forest[year == death_year-1], .(cell, groupvar)]
+        if ("dist_nonforest" %in% colnames(dt)) dt[death == 1, dist_nonforest := dist_nonforest[year == death_year-1], .(cell, groupvar)]
 
-        #dt[death == 1, mb_years_since_forest    := (mb_years_since_forest[year == death_year-1] + 1), .(cell, groupvar)]
-        #dt[death == 1, mb_years_since_nonforest := (mb_years_since_nonforest[year == death_year-1] + 1), .(cell, groupvar)]
+        if ("mb_years_since_forest" %in% colnames(dt)) dt[death == 1, mb_years_since_forest    := (mb_years_since_forest[year == death_year-1] + 1), .(cell, groupvar)]
+        if ("mb_years_since_nonforest" %in% colnames(dt)) dt[death == 1, mb_years_since_nonforest := (mb_years_since_nonforest[year == death_year-1] + 1), .(cell, groupvar)]
 
         dt[, death_year := NULL]
 

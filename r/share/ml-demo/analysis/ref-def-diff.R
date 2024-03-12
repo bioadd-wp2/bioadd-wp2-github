@@ -4,10 +4,14 @@ base_folder <- paste0("C:/temp/rf_predictions/")
 out_folder <- paste0(base_folder, "diff/diff_raster/")
 if (!file.exists(out_folder)) dir.create(out_folder, recursive = TRUE)
 
+
+# The only parameter is this:
+type <- "_within"
+
 for (i in 2001:2020) {
 
-	r_ref <- rast(paste0(base_folder, "/ref/processed/pred_", i, ".tif"))
-	r_def <- rast(paste0(base_folder, "/def/processed/pred_", i, ".tif"))
+	r_ref <- rast(paste0(base_folder, "/ref", type, "/processed/pred_", i, ".tif"))
+	r_def <- rast(paste0(base_folder, "/def", type, "/processed/pred_", i, ".tif"))
 
 	r_ref <- 1 - r_ref
 
@@ -26,6 +30,8 @@ for (i in 2001:2020) {
 	#r_diff <- r_diff - mean(as.data.table(r_diff)[[1]], na.rm = TRUE) 
 	#r_diff <- r_diff / max(abs(as.data.table(r_diff)[[1]]), na.rm = TRUE)
 
+    # Resample the original raster to the new resolution
+    #resampled_rast <- terra::disagg(r_diff, 2, method = "bilinear")
 
 	r_diff |> writeRaster(paste0(out_folder, "diff_", i, ".tif"), overwrite = TRUE)
 
@@ -137,7 +143,7 @@ tifToPng(in_folder = out_folder, out_folder = out_folder_png)
 
 out_folder_gif = paste0(project_path, "output/gif/prediction-maps/")
 
-pngToGif(in_folder = out_folder_png, out_folder_gif, "diff")
+pngToGif(in_folder = out_folder_png, out_folder_gif, paste0("diff", type))
 
 
 
