@@ -78,7 +78,6 @@ graphImportance(r_list = results_list[c("def", "def_within")], n_vars = 20) -> g
 base_folder <- paste0("C:/temp/rf_predictions/")
 if (!dir.exists(base_folder)) dir.create(base_folder, recursive = TRUE)
 
-
 within_elements <- names(f_list)[!(names(f_list) %in% c("time_invariant", "ref", "def", "baseline", "outcome"))]
 features_within <- as.vector(unlist(f_list[within_elements]))
 

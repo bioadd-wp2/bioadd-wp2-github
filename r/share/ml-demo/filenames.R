@@ -19,3 +19,4 @@ filenames$ml_demo$r_roads <- paste0(project_path, "data/constructed/raster/misc/
 filenames$ml_demo$bolivia_mask <- paste0(project_path, "data/constructed/raster/misc/ml-demo/bolivia_mask.tif")
 filenames$ml_demo$bolivia_mask_polygon <- paste0(project_path, "data/constructed/raster/misc/ml-demo/bolivia_mask_polygon.gpkg")
 
+filenames$ml_demo$pa_keep <- paste0(project_path, "data/constructed/csv/WDPA_exclusion.csv")

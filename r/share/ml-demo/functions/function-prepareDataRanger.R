@@ -71,18 +71,33 @@ prepareDataRanger <- function(dt_path, esample_path, type, min_slen = 1, n_sampl
         if (type == "ref") dt[, death := as.numeric(mb_forest == 1)]
         if (type == "def") dt[, death := as.numeric(mb_forest == 0)]
 
-        # Adjust the distance predictors where 0 would perfectly predict death
+        # Adjust the temporal or spatial distance predictors where 0 would perfectly predict death
 
         dt[, death_year := year[death == 1], .(cell, groupvar)]
 
-        if ("dist_forest" %in% colnames(dt)) dt[death == 1, dist_forest    := dist_forest[year == death_year-1], .(cell, groupvar)]
-        if ("dist_nonforest" %in% colnames(dt)) dt[death == 1, dist_nonforest := dist_nonforest[year == death_year-1], .(cell, groupvar)]
+        vars <- c("dist_forest", "dist_nonforest", "mb_years_since_forest", "mb_years_since_nonforest", "dist_natural_nonforest", "dist_ag", "dist_urban", "dist_water")
 
-        if ("mb_years_since_forest" %in% colnames(dt)) dt[death == 1, mb_years_since_forest    := (mb_years_since_forest[year == death_year-1] + 1), .(cell, groupvar)]
-        if ("mb_years_since_nonforest" %in% colnames(dt)) dt[death == 1, mb_years_since_nonforest := (mb_years_since_nonforest[year == death_year-1] + 1), .(cell, groupvar)]
+        for (var in vars) {
+
+            if (var %in% colnames(dt)) {
+
+                dt[, tempvar := get(var)]
+
+                dt[death == 1, tempvar := tempvar[year == death_year-1], .(cell, groupvar)]
+                dt[death == 1, (var) := tempvar, .(cell, groupvar)]
+
+                dt[, tempvar := NULL]
+
+            }
+
+        }
 
         dt[, death_year := NULL]
 
+        #if ("dist_forest" %in% colnames(dt)) dt[death == 1, dist_forest    := dist_forest[year == death_year-1], .(cell, groupvar)]
+        #if ("dist_nonforest" %in% colnames(dt)) dt[death == 1, dist_nonforest := dist_nonforest[year == death_year-1], .(cell, groupvar)]
+        #if ("mb_years_since_forest" %in% colnames(dt)) dt[death == 1, mb_years_since_forest    := (mb_years_since_forest[year == death_year-1] + 1), .(cell, groupvar)]
+        #if ("mb_years_since_nonforest" %in% colnames(dt)) dt[death == 1, mb_years_since_nonforest := (mb_years_since_nonforest[year == death_year-1] + 1), .(cell, groupvar)]
 
 
     ### Save to disk
