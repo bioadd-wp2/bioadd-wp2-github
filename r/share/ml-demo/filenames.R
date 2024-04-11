@@ -8,6 +8,9 @@ filenames$ml_demo$master_dt <- paste0(project_path, "/data/constructed/csv/ml_de
 filenames$ml_demo$master_dt_collected <- paste0(project_path, "/data/constructed/csv/ml_demo_master_dt_collected.csv")
 filenames$ml_demo$master_dt_edited <- paste0(project_path, "/data/constructed/csv/ml_demo_master_dt_edited.csv")
 
+filenames$ml_demo$pa_esample <- paste0(project_path, "/data/constructed/csv/ml_demo_pa_esample.csv")
+
+
 filenames$ml_demo$esample_ranger_prepared <- paste0(project_path, "/data/constructed/csv/esample_ranger_prepared.csv")
 
 filenames$ml_demo$ever_gain_2000_2011 <- paste0(project_path, "/data/constructed/raster/mapbiomas-transitions/summaries/ever_gain_2000_2011.tif")

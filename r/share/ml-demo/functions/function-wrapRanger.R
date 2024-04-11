@@ -1,8 +1,9 @@
 
-wrapRanger <- function(dt_path, esample_path, type, min_slen = 1, n_sample = 0, features_list, within_elements = NULL) {
+
+wrapRanger <- function(dt_path, esample_path, type, min_slen = 1, n_sample = 0, features_list, within_elements = NULL, primary_def = FALSE) {
 
     # Prepare estimation sample and store to disk 
-    prepareDataRanger(dt_path = dt_path, esample_path = esample_path, type = type, min_slen = min_slen, n_sample = n_sample, features_list = features_list, within_elements = within_elements)
+    prepareDataRanger(dt_path = dt_path, esample_path = esample_path, type = type, min_slen = min_slen, n_sample = n_sample, features_list = features_list, within_elements = within_elements, primary_def = primary_def)
 
     ### Train the model
 
@@ -12,11 +13,13 @@ wrapRanger <- function(dt_path, esample_path, type, min_slen = 1, n_sample = 0, 
     if (type == "ref") features_list$def <- NULL
     if (type == "def") features_list$ref <- NULL
     features_list$outcome <- NULL
+    
+    f_str <- paste0(unique(unlist(features_list)), collapse = " + ")
 
     cat("Training model ")
 
     fit <- ranger(
-        formula = as.formula(paste0("Surv(year, death)", " ~ ", paste0(unique(unlist(features_list)), collapse = " + "))),
+        formula = as.formula(paste0("Surv(year, death)", " ~ ", f_str)),
         data = esample_dt,
         num.trees = 100,
         importance = "impurity",

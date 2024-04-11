@@ -32,6 +32,6 @@ GENERAL INSTRUCTIONS
 
 - Share your code in the folder ~/r/share/
     - GitHub tracks this folder
-    - Use this folder for sharing your code with others
+    - Use this folder for sharing your code with others. The purpose is to facilitate experimenting and collaboration.
     - Please include date and author name in any script that you save here
-    - No other rules. The purpose of this folder is to facilitate experimenting and collaboration.
+    - No other rules.

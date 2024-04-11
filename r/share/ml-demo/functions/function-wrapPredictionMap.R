@@ -1,6 +1,6 @@
 
 
-wrapPredictionMap <- function(type, results_list, base_folder, out_folder_gif, features_within = NULL, gif_only = FALSE) {
+wrapPredictionMap <- function(type, results_list, base_folder, out_folder_gif, features_within = NULL, gif_only = FALSE, change_data = FALSE) {
 
 	### Folders
 
@@ -43,6 +43,28 @@ wrapPredictionMap <- function(type, results_list, base_folder, out_folder_gif, f
                 dt_new[, tempvar := NULL]
 
             }
+
+        }
+
+
+        if (change_data == TRUE) {
+
+			change_vars <- sort(results_list[[type]]$importance$var)
+			keep_vars <- c("dist_inra", "density_forest")
+
+			for (var in change_vars) {
+
+				cat(paste0(var))
+				if (!(var %in% keep_vars)) {
+					cat(" editing")
+					dt_new[, tempvar := get(var)]
+					dt_new[!is.na(tempvar), obsid := .I]
+					dt_new[!is.na(tempvar), (var) := tempvar[obsid == 1]]
+					dt_new[, tempvar := NULL]
+					dt_new[, obsid := NULL]
+				}
+				cat("\n")
+			}
 
         }
 
