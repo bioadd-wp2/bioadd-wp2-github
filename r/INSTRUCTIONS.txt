@@ -22,7 +22,7 @@ Set folder paths
 GENERAL INSTRUCTIONS
 
 - Data will be downloaded in the folder ~/data/
-    - GitHub will not track the contents in the data folder.
+    - GitHub will not track the contents of the data folder.
 
 - You should save any output in the folder ~/output/
     - GitHub will not track the contents of this folder. Share results primarily through Dropbox.
