@@ -15,7 +15,7 @@ Set folder paths
 	- On the first line of bioadd-wp2-paths.txt, enter the folder path of your local clone of the project GitHub repository, e.g. "C:/GitHub/bioadd-wp2-github/" (omit the quotation marks)
     - On the second line, enter the path to the project Dropbox folder, e.g. "C:/Users/ville/Dropbox/Work Packages/WP2/"
 	- The slashes must be forward slashes: /
-- The script setup.R, which you will run in the beginning of every session, will check that you have correctly specified the folder
+- The script setup.R, which you will run at the beginning of every session, will check that you have correctly specified the folder
 - setup.R will create the remaining folder structure within the project folder
 
 
