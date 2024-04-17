@@ -21,7 +21,7 @@ f_list$time_invariant <- c("gmted_mean", "gmted_sd", "inra_clasificac_en", "inra
 f_list$ref            <- c("dist_forest")
 f_list$def            <- c("dist_nonforest")
 
-# All variables intended to only have one time-invariant value measured at the first observed year of the ref or def sequence
+# Variables intended to only have one time-invariant value measured at the first observed year of the ref or def sequence
 # These are handled inside the wrapper function.
 f_list$baseline       <- c("mb_char", paste0("mb_lag_", 1:15), "mb_sum15_forest")
 #f_list$baseline       <- c("mb_sum15_forest", "mb_lag_1", "mb_lag_2") # There is a hack here, and see wrapRanger as well.
