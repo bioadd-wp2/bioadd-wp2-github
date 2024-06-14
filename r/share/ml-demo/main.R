@@ -41,7 +41,7 @@ source(paste0(ml_demo_path, "processing/get-sample.R"), local = new.env())
 # Extract variables
 
 # extractRaster() retrieves cell values from a raster using the cell index or by point coordinates
-# Extracting by cell index can be considerably faster with a large number of sampled points. Be careful not to use it if the raster is not in the same resolution as the sampling raster. The function also checks for this
+# Extracting by cell index can be considerably faster with a large number of sampled points. Do not to use it if the raster is not in the same resolution as the sampling raster. The function also checks for this
 # Must be careful with years matching the rasters (raster paths). The ith elements must match. The function does not check this!
 # The function parallelizes over layers but this may be unnecessary; extracting is very fast
 

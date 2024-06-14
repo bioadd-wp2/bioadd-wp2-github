@@ -92,7 +92,6 @@ graphImportance(r_list = results_list[c("ref", "ref_min3")], n_vars = 10) -> g1
 graphImportance(r_list = results_list[c("def", "def_min3")], n_vars = 10) -> g2
 graphImportance(r_list = results_list[c("ref", "ref_within")], n_vars = 10) -> g3
 graphImportance(r_list = results_list[c("def", "def_within")], n_vars = 10, annotate = FALSE) -> g4
-
 graphImportance(r_list = results_list[c("def", "ref", "def_primary")], n_vars = 10, ad_hoc = TRUE, annotate = FALSE, labels = FALSE)
 
 
@@ -126,6 +125,10 @@ wrapPredictionMap(type = "def_primary", results_list = results_list, base_folder
 
 wrapPredictionMap(type = "def", results_list = results_list, base_folder = base_folder, out_folder_gif = paste0(project_path, "output/gif/prediction-maps/datachanged-"), gif_only = FALSE, change_data = TRUE)
 wrapPredictionMap(type = "ref", results_list = results_list, base_folder = base_folder, out_folder_gif = paste0(project_path, "output/gif/prediction-maps/datachanged-"), gif_only = FALSE, change_data = TRUE)
+
+
+
+wrapPredictionMap(type = "def", results_list = results_list, base_folder = base_folder, out_folder_gif = paste0(project_path, "output/gif/prediction-maps/masked-"), gif_only = FALSE, change_data = FALSE)
 
 
 ### For Bolivia:

@@ -89,7 +89,7 @@ wrapPredictionMap <- function(type, results_list, base_folder, out_folder_gif, f
 		values(r_s_agg) <- as.numeric(NA)
 		r_s_agg |> writeRaster(pred_template_path, overwrite = TRUE)
 
-		for (i in 2001:2020) mapPrediction(y = i, in_folder = folders_list$pred, r_path = pred_template_path, pred_t = length(results_list[[type]]$fit$unique.death.times), crop_raster = TRUE, out_folder = folders_list$processed)
+		for (i in 2001:2020) mapPrediction(y = i, in_folder = folders_list$pred, r_path = pred_template_path, pred_t = length(results_list[[type]]$fit$unique.death.times), crop_raster = TRUE, out_folder = folders_list$processed, overlay_forest = TRUE)
 
 	} # gif_only end bracket
 	### Collect the prediction to a gif
@@ -98,6 +98,9 @@ wrapPredictionMap <- function(type, results_list, base_folder, out_folder_gif, f
 
 		# Tif to png
 		tifToPng(in_folder = folders_list$processed, out_folder = folders_list$png) 
+		tifToPng2(in_folder = folders_list$processed, out_folder = folders_list$png) 
+		#tifToPng3(in_folder = folders_list$processed, out_folder = folders_list$png) 
+		tifToPng4(in_folder = folders_list$processed, out_folder = folders_list$png) 
 
 		# Collect pngs to a gif animation
 		pngToGif(in_folder = folders_list$png, out_folder = folders_list$gif, name = paste0("prediction-animation-", type))
