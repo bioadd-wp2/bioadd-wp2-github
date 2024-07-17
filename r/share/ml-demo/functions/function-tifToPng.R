@@ -1,5 +1,5 @@
 
-tifToPng <- function(in_folder, out_folder, categorize = FALSE) {
+tifToPng <- function(in_folder, out_folder) {
 
     # To Png
 
@@ -10,19 +10,6 @@ tifToPng <- function(in_folder, out_folder, categorize = FALSE) {
         print(i)
 
         r <- rast(paste0(in_folder, "pred_", 2000 + i, ".tif"))
-
-        if (categorize == TRUE) {
-
-            #r[r > 0 & r < 0.2] <- 0.2
-            #r[r > 0.2 & r < 0.4] <- 0.4
-            #r[r > 0.4 & r < 0.6] <- 0.6
-            #r[r > 0.6 & r < 0.8] <- 0.8
-            #r[r > 0.8 & r <= 1] <- 1
-
-            category_breaks <- c(0.1, 0.2, 0.4, 0.6, 0.8, 1)
-            r[] <- as.character(cut(values(r), breaks = category_breaks, include.lowest = FALSE, labels = FALSE))
-
-        }
 
         ggplot() +
             geom_spatraster(data = r) +

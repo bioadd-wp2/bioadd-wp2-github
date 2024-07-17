@@ -42,7 +42,7 @@ source(paste0(project_path, "r/get-data/get-polygonised-modis-ba.R"), local = ne
 
 
 # Migration data from Niva et al. 2023, https://doi.org/10.5281/zenodo.7997134
-source(paste0(project_path, "r/get-data/get-polygonised-modis-ba.R"), local = new.env())
+source(paste0(project_path, "r/get-data/get-migration.R"), local = new.env())
 
 # GMTED2010 elevation data 7.5 arc seconds
 source(paste0(project_path, "r/get-data/download-gmted2010.R"), local = new.env())

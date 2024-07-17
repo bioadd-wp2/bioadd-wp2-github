@@ -36,6 +36,7 @@ editMaster <- function(in_file, out_file, debug = FALSE){
     dt[, mb_char := as.character(mb)] # ranger handles this nicely (creates indicators); will be fed as a baseline variable
 
     # Mapbiomas transitions variables, including survival lengths
+    # Not using these for the time being so omitting
 
         if (FALSE) {
 
@@ -64,7 +65,7 @@ editMaster <- function(in_file, out_file, debug = FALSE){
         dt[, mbtr_ref_temp_first := NULL]
         dt[, mbtr_def_temp_first := NULL]
 
-        }
+    }
 
     # Sums over previous 15 years, rolling sum
     
@@ -97,16 +98,17 @@ editMaster <- function(in_file, out_file, debug = FALSE){
     }
 
     # Lags
-    # Still experimenting with this; full history consumes disk space
-
+    # Note that adding variables here will quickly generate a large number of variables, eating memory
+    cat(paste0(Sys.time(), "| Lags"))
     for (var in c("mb", "density_forest", "density_200_forest")) {
 
-        print(var)
+        cat(paste0(" | ", var, " "))
+
         dt[, tempvar := get(var)]
 
         for (i in 1:15) {
 
-            print(paste0(Sys.time(), "| ", i))
+            #print(paste0(Sys.time(), "| ", i))
             varname <- paste0(var, "_lag_", i)
             dt[, (varname) := c(rep(NA, i), tempvar[-( (length(tempvar)-i+1):(length(tempvar)) )]), cell]
 
@@ -118,6 +120,9 @@ editMaster <- function(in_file, out_file, debug = FALSE){
 
     }
 
+    cat("| done\n")
+
+    # Transform mb to character
     for (i in 1:15) {
 
         varname <- paste0("mb_lag_", i)
@@ -132,11 +137,12 @@ editMaster <- function(in_file, out_file, debug = FALSE){
     vars <- c("pa_national_id", "pa_state_id", "pa_municipal_id", "inra_objectid", "gmted_mean", "gmted_sd", "density_200_road_pri", "density_200_road_sec", "density_200_road_ter", "density_road_pri", "density_road_sec", "density_road_ter", "dist_road_pri", "dist_road_sec", "dist_road_ter")
 
     for (var in vars) {
-        print(var)
+
         dt[, temp := get(var)]
-        if (length(unique(dt[, .(n_unique = length( unique(temp[!is.na(temp)]) )[ !is.na( unique(temp[!is.na(temp)]) ) ]), cell]$n_unique)) > 1) print(paste0("Error in variable ", var, " ; more than one unique value within cell."))
+        if (length(unique(dt[, .(n_unique = length( unique(temp[!is.na(temp)]) )[ !is.na( unique(temp[!is.na(temp)]) ) ]), cell]$n_unique)) > 1) stop(paste0("Error in variable ", var, " ; more than one unique value within cell."))
         dt[, (var) := unique(temp[!is.na(temp)]), by = .(cell)]
         dt[, temp := NULL]
+
     }
 
 
@@ -179,7 +185,7 @@ editMaster <- function(in_file, out_file, debug = FALSE){
 
     # Distance to property
 
-        dt[, dist_inra_cumul := dist_inra]
+        dt[, dist_inra_cumul := as.numeric(dist_inra)]
 
         dt[inra_ever == 0 & dist_inra_cumul == 0, dist_inra_cumul := 3001]
         dt[inra_ever == 1 & dist_inra_cumul == 0 & year < inra_cohort, dist_inra_cumul := 3001]
@@ -197,26 +203,6 @@ editMaster <- function(in_file, out_file, debug = FALSE){
         dt[inra_ever == 1, .(round(mean(dist_inra))), year]
         dt[inra_ever == 0, .(round(mean(dist_inra))), year]
 
-
-
-    # IMPORTANT: Distance variables consistency checks (0 can represent >3000, but this is simple to fix like this)
-        # The newer dist variables are unbounded. The bounding was an attempt to save disk space,, now solved; should recalculate these and remove this cde
-
-        colnames(dt)[grepl("dist", colnames(dt))]
-
-        dt[dist_ag == 0 & mb_ag == 0, dist_ag := 3001]
-        dt[dist_forest == 0 & mb_forest == 0, dist_ag := 3001]
-        dt[dist_urban == 0 & mb != 24, dist_urban := 3001]
-        dt[dist_water == 0 & !(mb %in% c(26, 33)), dist_water := 3001]
-    
-        dt[dist_water == 0 & !(mb %in% c(26, 33))]
-
-    # Burned area
-
-        dt[is.na(modis_ba), modis_ba := 0]
-
-        dt[, modis_ba_post := as.numeric(cumsum(modis_ba) > 0), cell]
-        dt[, modis_ba_ever := as.numeric(sum(modis_ba, na.rm = TRUE) > 0), cell]
 
     # Protected areas
 
@@ -238,12 +224,131 @@ editMaster <- function(in_file, out_file, debug = FALSE){
 
         dt[dt_pa , (colnames_pa_new) := setDT(mget(paste0("i.", colnames_pa))) , on = .(pa_id = WDPAID)]
 
-        dt[, pa_post := as.numeric(year >= pa_cohort)]
+        dt[pa_cohort > 0 & !is.na(pa_cohort), pa_post := as.numeric(year >= pa_cohort)]
         dt[is.na(pa_post), pa_post := 0]
 
         dt[, pa_ever := as.numeric(sum(pa_post, na.rm = TRUE) > 0), cell]
 
 
+
+        # Distance to PA; careful here!
+        # PAs treated during 1986:2021
+
+        for (type in c("national", "state", "municipal")) {
+
+            varname <- paste0("dist_pa_", type)
+            varname_old <- paste0("dist_pa_", type, "_cohort")
+
+            dt[, tempvar := as.numeric(get(varname_old))]
+
+                dt[pa_ever == 0 & tempvar == 0, tempvar := 10001]
+                dt[pa_ever == 1 & tempvar == 0 & year < pa_cohort, tempvar := 10001]
+
+                dt[is.na(tempvar), tempvar := Inf]
+                dt[, tempvar := cummin(tempvar), cell]
+
+                dt[tempvar == Inf, tempvar := 10001]
+
+                dt[, (varname) := tempvar]
+        
+                # Check that these make sense:
+                dt[pa_ever == 1, .(round(mean(tempvar, na.rm = TRUE))), year]
+                dt[pa_ever == 0, .(round(mean(tempvar, na.rm = TRUE))), year]
+
+                dt[, tempvar := NULL]
+
+        }
+
+
+        summary(dt[year == 1985 & pa_ever == 1]$dist_pa_municipal_cohort_always)
+
+        dt[, pa_always_ever_temp := as.numeric(!is.na(pa_cohort) & pa_cohort > 0 & pa_cohort < 1986 & pa_ever == 1 & pa_keep == 1)]
+        dt[, pa_always_ever_temp := max(pa_always_ever_temp, na.rm = TRUE), cell]
+
+        for (type in c("national", "state", "municipal")) {
+
+            varname <- paste0("dist_pa_", type, "_always")
+            varname_old <- paste0("dist_pa_", type, "_cohort_always")
+
+            dt[, tempvar := get(varname_old)]
+
+            dt[pa_always_ever_temp == 0 & tempvar == 0, tempvar := 10001]
+            dt[pa_always_ever_temp == 1 , tempvar := 0] # Important: It's this simple. Always treated is always treated. It's the non-always-treated where we need to find the distance (in 1985 effectively)
+
+            dt[pa_always_ever_temp == 0, tempvar := min(tempvar, na.rm = TRUE), cell] # Important: this is the minimum since the year is meaningless here; the data is simply stored sequentially to avoid defining variables
+      
+            dt[, (varname) := tempvar]
+
+            dt[, tempvar := NULL]
+      
+        }
+
+        dt[, pa_always_ever_temp := NULL]
+
+        # Final variables
+
+        dt[, dist_pa_national := pmin(dist_pa_national, dist_pa_national_always)]
+        dt[, dist_pa_state := pmin(dist_pa_state, dist_pa_state_always)]
+        dt[, dist_pa_municipal := pmin(dist_pa_municipal, dist_pa_municipal_always)]
+
+        dt[, dist_pa := pmin(dist_pa_national, dist_pa_state)]
+        dt[, dist_pa := pmin(dist_pa, dist_pa_municipal)]
+
+        # Delete variables
+
+        dt[, dist_pa_national_always := NULL]
+        dt[, dist_pa_state_always := NULL]
+        dt[, dist_pa_municipal_always := NULL]
+
+
+        # Consistency checks
+        dt[, .(
+            cellmin = min(dist_pa, na.rm = TRUE),
+            cellmax = max(dist_pa, na.rm = TRUE),
+            pa_cohort = max(pa_cohort, na.rm = TRUE),
+            pa_ever = max(pa_ever, na.rm = TRUE)
+            ), cell][pa_ever == 0]
+
+
+    ### Burned area
+
+        dt[is.na(modis_ba), modis_ba := 0]
+
+        dt[, modis_ba_post := as.numeric(cumsum(modis_ba) > 0), cell]
+        dt[, modis_ba_ever := as.numeric(sum(modis_ba, na.rm = TRUE) > 0), cell]
+
+
+    ### Distance variables
+    ### IMPORTANT: Distance variables consistency checks (0 can represent >3000, but this is simple to fix as follows)
+        # The newer dist variables are unbounded. The bounding was an attempt to save disk space,, now solved; should recalculate these and remove this cde
+        # Currently urban is bounded at 3000
+
+        colnames(dt)[grepl("dist", colnames(dt))]
+        
+        # Check maximum values
+        lapply(dt[, .(dist_ag, dist_forest, dist_nonforest, dist_natural_nonforest, dist_nonnatural, dist_urban, dist_water, dist_inra, dist_pa)], summary)
+
+        # Could automate this; this is easier to debug and check values individually; at this point, all the variables should behave as expected
+        if (nrow(dt[dist_forest == 0 & mb_forest == 0]) > 1) dt[dist_forest == 0 & mb_forest == 0, dist_forest := 10001]
+        if (nrow(dt[dist_nonforest == 0 & mb_nonforest == 0]) > 1) dt[dist_nonforest == 0 & mb_nonforest == 0, dist_nonforest := 10001]
+        if (nrow(dt[dist_natural_nonforest == 0 & mb_natural_nonforest == 0]) > 1) dt[dist_natural_nonforest == 0 & mb_natural_nonforest == 0, dist_natural_nonforest:= 10001]
+        if (nrow(dt[dist_nonnatural == 0 & mb_nonnatural == 0]) > 1) dt[dist_nonnatural == 0 & mb_nonnatural == 0, dist_nonnatural := 10001]
+        if (nrow(dt[dist_ag == 0 & mb_ag == 0]) > 1) dt[dist_ag == 0 & mb_ag == 0, dist_ag := 10001]
+        if (nrow(dt[dist_urban == 0 & mb != 24]) > 1) dt[dist_urban == 0 & mb != 24, dist_urban := 3001]
+        if (nrow(dt[dist_water == 0 & !(mb %in% c(26, 33))]) > 1) dt[dist_water == 0 & !(mb %in% c(26, 33)), dist_water := 10001]
+        
+        if (nrow(dt[dist_inra == 0 & inra_ever == 0]) > 1) dt[dist_inra == 0 & inra_ever == 0, dist_inra := 10001]
+        if (nrow(dt[dist_pa == 0 & pa_ever == 0]) > 1) dt[dist_pa == 0 & pa_ever == 0, dist_pa := 10001]
+
+
+        # Check distance consistency; only one mb distance can be 0 at a time
+        idx_1 <- apply(dt[, .(dist_forest, dist_natural_nonforest, dist_ag, dist_urban)], 1, function(x) sum(x == 0) > 1 )
+        idx_2 <- apply(dt[, .(dist_forest, dist_natural_nonforest, dist_nonnatural)], 1, function(x) sum(x == 0) > 1 )
+        idx_3 <- apply(dt[, .(dist_forest, dist_nonforest)], 1, function(x) sum(x == 0) > 1 )
+
+        if (nrow(dt[idx_1 | idx_2 | idx_3]) > 0) warning("Discrepancies in distance variables detected")
+
+    
     # These will be necessary for subsetting later on. Keep these strictly as last - might edit this procedure
 
     dt[, rid_nonforest := cumsum(mb_nonforest), cell]
@@ -267,14 +372,14 @@ editMaster <- function(in_file, out_file, debug = FALSE){
     dt[, def_cumsum := NULL]
 
     # Check that this is correct
-    # dt[cell == unique(dt[year == 1985 & mb == 3 & ever_ref == TRUE & ever_def == TRUE]$cell)[1], .(mb_forest, mb_ref_obs, ref_cumsum, ref_group, def_group)]
+    # dt[cell == unique(dt[year == 1985 & mb == 3 & ever_ref == TRUE & ever_def == TRUE]$cell)[40], .(mb_forest, mb_ref_obs, ref_cumsum, ref_group, def_group)]
 
     # Save
 
     dt |> fwrite(out_file)
 
     t1 <- Sys.time()
-    cat(paste0(Sys.time(), " | edits completed in ", round(t1-t0), " time units\n"))
+    cat(paste0(Sys.time(), " | edits completed in ", round(as.numeric(difftime(t1, t0, units = "mins")), 2), " minutes\n"))
 
     return(0)
 

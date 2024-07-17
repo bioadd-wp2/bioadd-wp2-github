@@ -1,6 +1,6 @@
 
 
-wrapPredictionMap <- function(type, results_list, base_folder, out_folder_gif, features_within = NULL, gif_only = FALSE) {
+wrapPredictionMap <- function(type, results_list, base_folder, out_folder_gif, features_within = NULL, gif_only = FALSE, change_data = FALSE) {
 
 	### Folders
 
@@ -46,6 +46,28 @@ wrapPredictionMap <- function(type, results_list, base_folder, out_folder_gif, f
 
         }
 
+
+        if (change_data == TRUE) {
+
+			change_vars <- sort(results_list[[type]]$importance$var)
+			keep_vars <- c("dist_inra", "density_forest")
+
+			for (var in change_vars) {
+
+				cat(paste0(var))
+				if (!(var %in% keep_vars)) {
+					cat(" editing")
+					dt_new[, tempvar := get(var)]
+					dt_new[!is.na(tempvar), obsid := .I]
+					dt_new[!is.na(tempvar), (var) := tempvar[obsid == 1]]
+					dt_new[, tempvar := NULL]
+					dt_new[, obsid := NULL]
+				}
+				cat("\n")
+			}
+
+        }
+
 		cat("Calculating predictions\n")
 
 		for (i in 2001:2020) predictRanger(y = i, fit = results_list[[type]]$fit, newdata = dt_new[year == i, mget(vars)], out_folder = folders_list$pred, n_threads = 6)
@@ -67,7 +89,7 @@ wrapPredictionMap <- function(type, results_list, base_folder, out_folder_gif, f
 		values(r_s_agg) <- as.numeric(NA)
 		r_s_agg |> writeRaster(pred_template_path, overwrite = TRUE)
 
-		for (i in 2001:2020) mapPrediction(y = i, in_folder = folders_list$pred, r_path = pred_template_path, pred_t = length(results_list[[type]]$fit$unique.death.times), crop_raster = TRUE, out_folder = folders_list$processed)
+		for (i in 2001:2020) mapPrediction(y = i, in_folder = folders_list$pred, r_path = pred_template_path, pred_t = length(results_list[[type]]$fit$unique.death.times), crop_raster = TRUE, out_folder = folders_list$processed, overlay_forest = TRUE)
 
 	} # gif_only end bracket
 	### Collect the prediction to a gif
@@ -76,6 +98,9 @@ wrapPredictionMap <- function(type, results_list, base_folder, out_folder_gif, f
 
 		# Tif to png
 		tifToPng(in_folder = folders_list$processed, out_folder = folders_list$png) 
+		tifToPng2(in_folder = folders_list$processed, out_folder = folders_list$png) 
+		#tifToPng3(in_folder = folders_list$processed, out_folder = folders_list$png) 
+		tifToPng4(in_folder = folders_list$processed, out_folder = folders_list$png) 
 
 		# Collect pngs to a gif animation
 		pngToGif(in_folder = folders_list$png, out_folder = folders_list$gif, name = paste0("prediction-animation-", type))

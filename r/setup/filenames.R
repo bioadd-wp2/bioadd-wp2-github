@@ -59,6 +59,7 @@ filenames$vector$protected_areas$polygons <- lapply(list(
     ), function(x) paste0(project_path, "data/raw/shp/WDPA_WDOECM_Feb2024_Public_BOL_shp/", x, "/WDPA_WDOECM_Feb2024_Public_BOL_shp-polygons.shp"))
 
 
+filenames$vector$protected_areas_cleaned <-  paste0(project_path, "data/raw/shp/ProtectedAreas_Bolivia/ProtectedAreas_Bolivia.shp")
 
 filenames$vector$firms <- paste0(project_path, "data/constructed/gpkg/firms_bolivia.gpkg")
 filenames$vector$firms_polygons <- paste0(project_path, "data/constructed/gpkg/firms_polygons_bolivia.gpkg")
