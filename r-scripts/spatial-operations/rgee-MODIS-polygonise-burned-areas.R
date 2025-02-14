@@ -58,3 +58,32 @@ for(year in years) {
   
   
 }
+
+
+# Set the source and destination paths
+source_path <- "..."
+destination_path <- "..."
+
+# Get a list of files in the source directory
+files_to_copy <- list.files(source_path)
+
+# Create the destination directory if it doesn't exist
+if (!dir.exists(destination_path)) {
+  dir.create(destination_path, recursive = TRUE)
+}
+
+# Copy each file from the source to the destination
+for (file in files_to_copy) {
+  source_file <- file.path(source_path, file)
+  destination_file <- file.path(destination_path, file)
+  
+  # Check if the file already exists in the destination
+  if (!file.exists(destination_file)) {
+    # Copy the file
+    file.copy(source_file, destination_file)
+    print(paste("Copied", source_file, "to", destination_file))
+  } else {
+    print(paste("File", destination_file, "already exists. Skipping."))
+  }
+}
+
